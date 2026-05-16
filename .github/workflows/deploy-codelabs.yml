@@ -61,13 +61,13 @@ jobs:
                   with open(path, encoding="utf-8") as f:
                       html = f.read()
 
-                  # Replace existing home-url value if present
-                  if 'home-url=' in html:
-                      html = re.sub(r'home-url="[^"]*"', f'home-url="{home_url}"', html)
+                  # Replace existing homepage-url value if present
+                  if 'homepage-url=' in html:
+                      html = re.sub(r'homepage-url="[^"]*"', f'homepage-url="{home_url}"', html)
                   else:
                       # (?!-) avoids matching <google-codelab-analytics and similar
                       html = re.sub(r'(<google-codelab)(?!-)',
-                                    rf'\1 home-url="{home_url}"', html, count=1)
+                                    rf'\1 homepage-url="{home_url}"', html, count=1)
 
                   # Inject JS that overrides homeUrl on the web component prototype
                   js = (
@@ -76,7 +76,7 @@ jobs:
                       f"var u='{home_url}';"
                       "function patch(){"
                       "  var el=document.querySelector('google-codelab');"
-                      "  if(el) el.setAttribute('home-url',u);"
+                      "  if(el) el.setAttribute('homepage-url',u);"
                       "  var C=customElements&&customElements.get&&customElements.get('google-codelab');"
                       "  if(C&&C.prototype){"
                       "    try{Object.defineProperty(C.prototype,'homeUrl',{get:function(){return u;},configurable:true});}catch(e){}"
