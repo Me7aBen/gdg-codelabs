@@ -685,6 +685,11 @@ android docs search "tema" # buscar en la Knowledge Base oficial
 | **Room** | La forma oficial de guardar datos estructurados en el dispositivo |
 | **ViewModel** | El componente que guarda la lógica y el estado de una pantalla, y sobrevive a rotaciones |
 
+### Repositorio de referencia
+
+¿Quieres ver cómo quedó la app terminada? Puedes revisar el código completo aquí:
+[github.com/Me7aBen/PomodoroTec-V2](https://github.com/Me7aBen/PomodoroTec-V2)
+
 ### Recursos
 
 - **Android Skills**: [developer.android.com/android-skills](https://developer.android.com/android-skills)
