@@ -44,60 +44,6 @@ jobs:
             "$CLAAT" export -o site/ "$f"
           done
 
-      - name: Fix home URL in exported codelabs
-        run: |
-          python3 - << 'PYEOF'
-          import os, re
-
-          home_url = "https://me7aben.github.io/gdg-codelabs/"
-
-          for dirpath, _, files in os.walk("site"):
-              if dirpath == "site":
-                  continue
-              for fname in files:
-                  if fname != "index.html":
-                      continue
-                  path = os.path.join(dirpath, fname)
-                  with open(path, encoding="utf-8") as f:
-                      html = f.read()
-
-                  # Replace existing homepage-url value if present
-                  if 'homepage-url=' in html:
-                      html = re.sub(r'homepage-url="[^"]*"', f'homepage-url="{home_url}"', html)
-                  else:
-                      # (?!-) avoids matching <google-codelab-analytics and similar
-                      html = re.sub(r'(<google-codelab)(?!-)',
-                                    rf'\1 homepage-url="{home_url}"', html, count=1)
-
-                  # Inject JS that patches arrow-back and done hrefs inside the shadow DOM
-                  js = (
-                      "<script>"
-                      "(function(){"
-                      f"var u='{home_url}';"
-                      "function patch(){"
-                      "  var el=document.querySelector('google-codelab');"
-                      "  if(!el||!el.shadowRoot)return;"
-                      "  var b=el.shadowRoot.querySelector('#arrow-back');"
-                      "  var d=el.shadowRoot.querySelector('#done');"
-                      "  if(b)b.href=u;"
-                      "  if(d)d.href=u;"
-                      "}"
-                      "[0,200,600,1500].forEach(function(t){setTimeout(patch,t)});"
-                      "if(typeof customElements!=='undefined'&&customElements.whenDefined){"
-                      "  customElements.whenDefined('google-codelab').then(function(){"
-                      "    [0,200,600].forEach(function(t){setTimeout(patch,t)});"
-                      "  });"
-                      "}"
-                      "})();"
-                      "</script>"
-                  )
-                  html = html.replace('</body>', js + '\n</body>', 1)
-
-                  with open(path, "w", encoding="utf-8") as f:
-                      f.write(html)
-                  print(f"Patched: {path}")
-          PYEOF
-
       - name: Build index page
         run: |
           python3 - << 'PYEOF'
@@ -209,7 +155,7 @@ jobs:
                   card.innerHTML = `<h2>${e.title}</h2>
                     <div class="meta"><span>${e.duration}</span><span>Updated ${e.updated}</span></div>
                     <p class="desc">${e.summary}</p>
-                    <div class="footer"><div class="tags">${tags}</div><a class="btn" href="${e.id}/">Start</a></div>`;
+                    <div class="footer"><div class="tags">${tags}</div><a class="btn" href="${e.id}/?index=gdg-codelabs">Start</a></div>`;
                   grid.appendChild(card);
                 });
               }
