@@ -4,6 +4,7 @@ status: Published
 authors: GDG Local
 categories: Android
 environments: Web
+feedback link: https://me7aben.github.io/gdg-codelabs/
 
 # Tu primera app Android construida conversando: PomodoroTec
 

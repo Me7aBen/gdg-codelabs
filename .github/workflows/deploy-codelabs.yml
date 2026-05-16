@@ -44,48 +44,34 @@ jobs:
             "$CLAAT" export -o site/ "$f"
           done
 
-      - name: Create index page
-        run: |
-          cat > site/index.html << 'EOF'
-          <!DOCTYPE html>
-          <html lang="es">
-          <head>
-            <meta charset="UTF-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <title>Codelabs — GDG</title>
-            <style>
-              body { font-family: Google Sans, Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; background: #f8f9fa; }
-              h1 { color: #1a73e8; }
-              .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
-              .card { background: white; border-radius: 8px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,.12); text-decoration: none; color: inherit; display: block; transition: box-shadow .2s; }
-              .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.18); }
-              .card h2 { font-size: 1.1rem; margin: 0 0 .5rem; color: #1a73e8; }
-              .card p { font-size: .9rem; color: #555; margin: 0; }
-            </style>
-          </head>
-          <body>
-            <h1>Codelabs</h1>
-            <p>Selecciona un codelab para comenzar.</p>
-            <div class="grid" id="codelabs"></div>
-            <script>
-              const entries = CODELAB_INDEX;
-              const grid = document.getElementById('codelabs');
-              entries.forEach(e => {
-                const a = document.createElement('a');
-                a.className = 'card';
-                a.href = e.id + '/';
-                a.innerHTML = '<h2>' + e.title + '</h2><p>' + e.summary + '</p>';
-                grid.appendChild(a);
-              });
-            </script>
-          </body>
-          </html>
-          EOF
-
-      - name: Build index data
+      - name: Build index page
         run: |
           python3 - << 'PYEOF'
-          import os, re, json
+          import os, re, json, subprocess, datetime
+
+          MESES = ["enero","febrero","marzo","abril","mayo","junio",
+                   "julio","agosto","septiembre","octubre","noviembre","diciembre"]
+
+          def parse_duration(content):
+              total = 0
+              for m in re.finditer(r'^Duration:\s*(\d+):(\d+):(\d+)', content, re.MULTILINE):
+                  total += int(m.group(1))*3600 + int(m.group(2))*60 + int(m.group(3))
+              h, mins = total // 3600, (total % 3600) // 60
+              if h > 0 and mins > 0:
+                  return f"{h} hora{'s' if h>1 else ''} {mins} minuto{'s' if mins!=1 else ''}"
+              elif h > 0:
+                  return f"{h} hora{'s' if h>1 else ''}"
+              return f"{mins} minuto{'s' if mins!=1 else ''}"
+
+          def git_date(path):
+              r = subprocess.run(["git","log","-1","--format=%ai","--",path],
+                                 capture_output=True, text=True)
+              raw = r.stdout.strip()[:10]
+              if raw:
+                  y, m, d = raw.split("-")
+                  return f"{int(d)} de {MESES[int(m)-1]} de {y}"
+              now = datetime.date.today()
+              return f"{now.day} de {MESES[now.month-1]} de {now.year}"
 
           codelabs_dir = "codelabs"
           entries = []
@@ -97,24 +83,99 @@ jobs:
               with open(path, encoding="utf-8") as f:
                   content = f.read()
 
-              cid     = re.search(r'^id:\s*(.+)$', content, re.MULTILINE)
-              summary = re.search(r'^summary:\s*(.+)$', content, re.MULTILINE)
-              title   = re.search(r'^#\s+(.+)$', content, re.MULTILINE)
+              cid        = re.search(r'^id:\s*(.+)$',         content, re.MULTILINE)
+              summary    = re.search(r'^summary:\s*(.+)$',    content, re.MULTILINE)
+              title      = re.search(r'^#\s+(.+)$',           content, re.MULTILINE)
+              categories = re.search(r'^categories:\s*(.+)$', content, re.MULTILINE)
 
-              if cid:
-                  entries.append({
-                      "id":      cid.group(1).strip(),
-                      "title":   title.group(1).strip() if title else cid.group(1).strip(),
-                      "summary": summary.group(1).strip() if summary else "",
-                  })
+              if not cid:
+                  continue
 
-          index_path = "site/index.html"
-          with open(index_path, encoding="utf-8") as f:
-              html = f.read()
+              entries.append({
+                  "id":         cid.group(1).strip(),
+                  "title":      title.group(1).strip() if title else cid.group(1).strip(),
+                  "summary":    summary.group(1).strip() if summary else "",
+                  "duration":   parse_duration(content),
+                  "updated":    git_date(path),
+                  "categories": categories.group(1).strip() if categories else "",
+              })
 
-          html = html.replace("CODELAB_INDEX", json.dumps(entries, ensure_ascii=False))
+          html = '''<!DOCTYPE html>
+          <html lang="es">
+          <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Codelabs — GDG</title>
+            <style>
+              *{box-sizing:border-box;margin:0;padding:0}
+              body{font-family:Google Sans,Roboto,sans-serif;background:#f8f9fa;min-height:100vh}
+              header{background:#fff;padding:1rem 2rem;border-bottom:1px solid #e0e0e0;display:flex;align-items:center;gap:.75rem}
+              header svg{flex-shrink:0}
+              header h1{font-size:1.15rem;color:#202124;font-weight:500}
+              .top{padding:1.5rem 2rem 1rem;max-width:1200px;margin:0 auto}
+              .search{width:100%;padding:.7rem 1.25rem;border:1px solid #dadce0;border-radius:24px;font-size:1rem;outline:none;background:#fff;color:#202124}
+              .search:focus{border-color:#1a73e8;box-shadow:0 1px 6px rgba(26,115,232,.2)}
+              .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem;padding:0 2rem 2rem;max-width:1200px;margin:0 auto}
+              .card{background:#fff;border-radius:8px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.12);display:flex;flex-direction:column;gap:.6rem;transition:box-shadow .2s}
+              .card:hover{box-shadow:0 4px 12px rgba(0,0,0,.18)}
+              .card h2{font-size:1.05rem;color:#202124;line-height:1.4}
+              .meta{display:flex;justify-content:space-between;font-size:.78rem;color:#80868b}
+              .desc{font-size:.88rem;color:#3c4043;line-height:1.55;flex:1}
+              .footer{display:flex;justify-content:space-between;align-items:center;margin-top:.25rem}
+              .tags{display:flex;gap:.4rem;flex-wrap:wrap}
+              .tag{font-size:.72rem;background:#e8f0fe;color:#1a73e8;padding:.2rem .65rem;border-radius:12px;font-weight:500}
+              .btn{background:#fff;color:#1a73e8;border:1px solid #dadce0;padding:.45rem 1.1rem;border-radius:4px;font-size:.88rem;text-decoration:none;font-weight:500;white-space:nowrap}
+              .btn:hover{background:#e8f0fe;border-color:#1a73e8}
+              .empty{text-align:center;color:#80868b;padding:3rem;grid-column:1/-1}
+            </style>
+          </head>
+          <body>
+            <header>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#1a73e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <h1>Codelabs — GDG</h1>
+            </header>
+            <div class="top">
+              <input class="search" type="search" placeholder="Busca en nuestros codelabs" id="search" />
+            </div>
+            <div class="grid" id="grid"></div>
+            <script>
+              const data = DATA_PLACEHOLDER;
+              const grid = document.getElementById("grid");
+              const search = document.getElementById("search");
+              function render(list) {
+                grid.innerHTML = "";
+                if (!list.length) { grid.innerHTML = \'<p class="empty">No se encontraron codelabs.</p>\'; return; }
+                list.forEach(e => {
+                  const tags = (e.categories||"").split(",").map(t=>t.trim()).filter(Boolean)
+                    .map(t=>`<span class="tag">${t}</span>`).join("");
+                  const card = document.createElement("div");
+                  card.className = "card";
+                  card.innerHTML = `<h2>${e.title}</h2>
+                    <div class="meta"><span>${e.duration}</span><span>Updated ${e.updated}</span></div>
+                    <p class="desc">${e.summary}</p>
+                    <div class="footer"><div class="tags">${tags}</div><a class="btn" href="${e.id}/">Start</a></div>`;
+                  grid.appendChild(card);
+                });
+              }
+              render(data);
+              search.addEventListener("input", () => {
+                const q = search.value.toLowerCase();
+                render(q ? data.filter(e =>
+                  e.title.toLowerCase().includes(q) ||
+                  e.summary.toLowerCase().includes(q) ||
+                  (e.categories||"").toLowerCase().includes(q)
+                ) : data);
+              });
+            </script>
+          </body>
+          </html>'''
 
-          with open(index_path, "w", encoding="utf-8") as f:
+          html = html.replace("DATA_PLACEHOLDER", json.dumps(entries, ensure_ascii=False))
+
+          os.makedirs("site", exist_ok=True)
+          with open("site/index.html", "w", encoding="utf-8") as f:
               f.write(html)
 
           print(f"Index built with {len(entries)} codelabs.")
