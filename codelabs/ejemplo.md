@@ -1,11 +1,9 @@
----
 id: ejemplo
 summary: Codelab de ejemplo para verificar el pipeline.
 status: Published
 authors: Tu Nombre
 categories: Android
 environments: Web
----
 
 # Codelab de Ejemplo
 
