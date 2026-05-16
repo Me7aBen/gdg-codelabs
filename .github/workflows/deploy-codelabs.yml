@@ -69,21 +69,25 @@ jobs:
                       html = re.sub(r'(<google-codelab)(?!-)',
                                     rf'\1 homepage-url="{home_url}"', html, count=1)
 
-                  # Inject JS that overrides homeUrl on the web component prototype
+                  # Inject JS that patches arrow-back and done hrefs inside the shadow DOM
                   js = (
                       "<script>"
                       "(function(){"
                       f"var u='{home_url}';"
                       "function patch(){"
                       "  var el=document.querySelector('google-codelab');"
-                      "  if(el) el.setAttribute('homepage-url',u);"
-                      "  var C=customElements&&customElements.get&&customElements.get('google-codelab');"
-                      "  if(C&&C.prototype){"
-                      "    try{Object.defineProperty(C.prototype,'homeUrl',{get:function(){return u;},configurable:true});}catch(e){}"
-                      "  }"
+                      "  if(!el||!el.shadowRoot)return;"
+                      "  var b=el.shadowRoot.querySelector('#arrow-back');"
+                      "  var d=el.shadowRoot.querySelector('#done');"
+                      "  if(b)b.href=u;"
+                      "  if(d)d.href=u;"
                       "}"
-                      "if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',patch);}else{patch();}"
-                      "if(typeof customElements!=='undefined'){customElements.whenDefined('google-codelab').then(patch);}"
+                      "[0,200,600,1500].forEach(function(t){setTimeout(patch,t)});"
+                      "if(typeof customElements!=='undefined'&&customElements.whenDefined){"
+                      "  customElements.whenDefined('google-codelab').then(function(){"
+                      "    [0,200,600].forEach(function(t){setTimeout(patch,t)});"
+                      "  });"
+                      "}"
                       "})();"
                       "</script>"
                   )
