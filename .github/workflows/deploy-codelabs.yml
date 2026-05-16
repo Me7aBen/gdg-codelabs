@@ -44,6 +44,32 @@ jobs:
             "$CLAAT" export -o site/ "$f"
           done
 
+      - name: Fix home URL in exported codelabs
+        run: |
+          python3 - << 'PYEOF'
+          import os, re
+
+          home_url = "https://me7aben.github.io/gdg-codelabs/"
+
+          for dirpath, _, files in os.walk("site"):
+              if dirpath == "site":
+                  continue
+              for fname in files:
+                  if fname != "index.html":
+                      continue
+                  path = os.path.join(dirpath, fname)
+                  with open(path, encoding="utf-8") as f:
+                      html = f.read()
+                  if 'home-url=' in html:
+                      html = re.sub(r'home-url="[^"]*"', f'home-url="{home_url}"', html)
+                  else:
+                      html = html.replace('<google-codelab ',
+                                          f'<google-codelab home-url="{home_url}" ', 1)
+                  with open(path, "w", encoding="utf-8") as f:
+                      f.write(html)
+                  print(f"Patched: {path}")
+          PYEOF
+
       - name: Build index page
         run: |
           python3 - << 'PYEOF'
