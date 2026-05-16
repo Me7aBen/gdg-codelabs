@@ -65,8 +65,8 @@ jobs:
                   if 'home-url=' in html:
                       html = re.sub(r'home-url="[^"]*"', f'home-url="{home_url}"', html)
                   else:
-                      # Insert after <google-codelab (handles newline or space after tag name)
-                      html = re.sub(r'(<google-codelab\b)',
+                      # (?!-) avoids matching <google-codelab-analytics and similar
+                      html = re.sub(r'(<google-codelab)(?!-)',
                                     rf'\1 home-url="{home_url}"', html, count=1)
 
                   with open(path, "w", encoding="utf-8") as f:
