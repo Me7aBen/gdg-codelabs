@@ -1,0 +1,136 @@
+name: Deploy Codelabs to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'codelabs/**'
+      - '.github/workflows/deploy-codelabs.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Install claat
+        run: go install github.com/googlecodelabs/tools/claat@latest
+
+      - name: Export codelabs
+        run: |
+          mkdir -p site
+          CLAAT="$HOME/go/bin/claat"
+
+          for f in codelabs/*.md; do
+            echo "Exporting $f ..."
+            "$CLAAT" export -o site/ "$f"
+          done
+
+      - name: Create index page
+        run: |
+          cat > site/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="es">
+          <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Codelabs — GDG</title>
+            <style>
+              body { font-family: Google Sans, Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; background: #f8f9fa; }
+              h1 { color: #1a73e8; }
+              .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+              .card { background: white; border-radius: 8px; padding: 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,.12); text-decoration: none; color: inherit; display: block; transition: box-shadow .2s; }
+              .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.18); }
+              .card h2 { font-size: 1.1rem; margin: 0 0 .5rem; color: #1a73e8; }
+              .card p { font-size: .9rem; color: #555; margin: 0; }
+            </style>
+          </head>
+          <body>
+            <h1>Codelabs</h1>
+            <p>Selecciona un codelab para comenzar.</p>
+            <div class="grid" id="codelabs"></div>
+            <script>
+              const entries = CODELAB_INDEX;
+              const grid = document.getElementById('codelabs');
+              entries.forEach(e => {
+                const a = document.createElement('a');
+                a.className = 'card';
+                a.href = e.id + '/';
+                a.innerHTML = '<h2>' + e.title + '</h2><p>' + e.summary + '</p>';
+                grid.appendChild(a);
+              });
+            </script>
+          </body>
+          </html>
+          EOF
+
+      - name: Build index data
+        run: |
+          python3 - << 'PYEOF'
+          import os, re, json
+
+          codelabs_dir = "codelabs"
+          entries = []
+
+          for fname in sorted(os.listdir(codelabs_dir)):
+              if not fname.endswith(".md"):
+                  continue
+              path = os.path.join(codelabs_dir, fname)
+              with open(path, encoding="utf-8") as f:
+                  content = f.read()
+
+              cid     = re.search(r'^id:\s*(.+)$', content, re.MULTILINE)
+              summary = re.search(r'^summary:\s*(.+)$', content, re.MULTILINE)
+              title   = re.search(r'^#\s+(.+)$', content, re.MULTILINE)
+
+              if cid:
+                  entries.append({
+                      "id":      cid.group(1).strip(),
+                      "title":   title.group(1).strip() if title else cid.group(1).strip(),
+                      "summary": summary.group(1).strip() if summary else "",
+                  })
+
+          index_path = "site/index.html"
+          with open(index_path, encoding="utf-8") as f:
+              html = f.read()
+
+          html = html.replace("CODELAB_INDEX", json.dumps(entries, ensure_ascii=False))
+
+          with open(index_path, "w", encoding="utf-8") as f:
+              f.write(html)
+
+          print(f"Index built with {len(entries)} codelabs.")
+          PYEOF
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
