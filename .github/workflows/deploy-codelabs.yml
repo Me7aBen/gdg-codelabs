@@ -69,14 +69,29 @@ jobs:
                       html = re.sub(r'(<google-codelab)(?!-)',
                                     rf'\1 home-url="{home_url}"', html, count=1)
 
+                  # Inject JS that overrides homeUrl on the web component prototype
+                  js = (
+                      "<script>"
+                      "(function(){"
+                      f"var u='{home_url}';"
+                      "function patch(){"
+                      "  var el=document.querySelector('google-codelab');"
+                      "  if(el) el.setAttribute('home-url',u);"
+                      "  var C=customElements&&customElements.get&&customElements.get('google-codelab');"
+                      "  if(C&&C.prototype){"
+                      "    try{Object.defineProperty(C.prototype,'homeUrl',{get:function(){return u;},configurable:true});}catch(e){}"
+                      "  }"
+                      "}"
+                      "if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',patch);}else{patch();}"
+                      "if(typeof customElements!=='undefined'){customElements.whenDefined('google-codelab').then(patch);}"
+                      "})();"
+                      "</script>"
+                  )
+                  html = html.replace('</body>', js + '\n</body>', 1)
+
                   with open(path, "w", encoding="utf-8") as f:
                       f.write(html)
                   print(f"Patched: {path}")
-                  # Show the patched line for debugging
-                  for line in html.splitlines():
-                      if 'google-codelab' in line and 'analytics' not in line:
-                          print(f"  → {line.strip()[:120]}")
-                          break
           PYEOF
 
       - name: Build index page
