@@ -18,23 +18,18 @@ Cada vez que hagas push de un archivo Markdown, un workflow de GitHub Actions lo
 ### Lo que construirás
 
 - Un repositorio GitHub con tu sitio de codelabs
-- Un pipeline de CI/CD que publica automáticamente al hacer push
+- Un pipeline que publica automáticamente al hacer push
 - Un índice con buscador y tarjetas al estilo Google Codelabs
 - Tu primer codelab publicado y funcionando
-
-### Lo que aprenderás
-
-- El formato Markdown que usa `claat` para generar codelabs
-- Cómo configurar GitHub Actions para publicar en GitHub Pages
-- Cómo agregar nuevos codelabs con solo hacer push
 
 ### Requisitos previos
 
 - Una cuenta en [github.com](https://github.com)
 - Git instalado en tu computadora
-- Un editor de texto (VS Code, cualquiera sirve)
+- Un editor de texto
 
 Verifica que tienes git:
+
 ```bash
 git --version
 ```
@@ -45,8 +40,8 @@ Duration: 0:05:00
 ### Crear el repo
 
 1. Ve a [github.com/new](https://github.com/new)
-2. Nombre del repositorio: `mis-codelabs` (o el nombre que prefieras)
-3. Visibilidad: **Public** (GitHub Pages gratuito solo funciona en repos públicos)
+2. Nombre: `mis-codelabs` (o el nombre que prefieras)
+3. Visibilidad: **Public**
 4. **No** agregues README, .gitignore ni licencia — el repo debe estar vacío
 5. Haz clic en **Create repository**
 
@@ -57,102 +52,86 @@ git clone https://github.com/TU_USUARIO/mis-codelabs.git
 cd mis-codelabs
 ```
 
-Reemplaza `TU_USUARIO` con tu usuario de GitHub.
-
 ## Paso 2 — Crear la estructura de carpetas
 Duration: 0:03:00
-
-Dentro de la carpeta del repo, crea esta estructura:
 
 ```bash
 mkdir -p codelabs
 mkdir -p .github/workflows
-```
-
-Luego crea el archivo `.gitignore`:
-
-```bash
 echo "site/" >> .gitignore
 ```
-
-La carpeta `site/` es donde el workflow genera el HTML — no debe commitearse al repo.
 
 Tu estructura debe quedar así:
 
 ```
 mis-codelabs/
 ├── .gitignore
-├── codelabs/        ← tus archivos .md van aquí
+├── codelabs/
 └── .github/
-    └── workflows/   ← el workflow de CI/CD va aquí
+    └── workflows/
 ```
 
-## Paso 3 — Escribir tu primer codelab
-Duration: 0:10:00
+## Paso 3 — El formato de claat
+Duration: 0:08:00
 
-### El formato de claat
-
-`claat` tiene un formato Markdown específico. La regla más importante:
+`claat` usa un formato Markdown específico. Hay una regla crítica que causa el 90% de los errores:
 
 > **El metadata va al inicio del archivo SIN delimitadores `---`.**
 
-Si usas `---` al inicio como en YAML/frontmatter normal, claat fallará con un error de "invalid metadata format".
+Si usas `---` como en YAML estándar, claat falla con `invalid metadata format`.
 
 ### Campos de metadata
 
-Crea el archivo `codelabs/mi-primer-codelab.md` con este contenido:
+Estos van en las primeras líneas del archivo, sin ningún delimitador:
 
-```markdown
-id: mi-primer-codelab
-summary: Una breve descripción de lo que trata este codelab.
+```
+id: nombre-unico-sin-espacios
+summary: Descripción breve que aparece en la tarjeta del índice.
 status: Published
 authors: Tu Nombre
 categories: Android
 environments: Web
 feedback link: https://TU_USUARIO.github.io/mis-codelabs/
+```
 
-# Título de Mi Codelab
+### Estructura de secciones
 
-## Introducción
+Después del metadata viene el contenido. Cada sección se declara con `##` seguido del nombre, y en la línea inmediata siguiente va `Duration:`:
+
+```
+# Título del Codelab
+
+(seccion con ##) Introducción
 Duration: 0:02:00
 
-Escribe aquí la introducción de tu codelab.
+Texto de introducción.
 
-## Paso 1 — Primer tema
+(seccion con ##) Primer paso
 Duration: 0:05:00
 
-Contenido del primer paso.
+Contenido del paso.
 
-Puedes usar código:
-
-```bash
-echo "Hola mundo"
-```
-
-## Paso 2 — Segundo tema
-Duration: 0:05:00
-
-Contenido del segundo paso.
-
-## ¡Felicitaciones!
+(seccion con ##) Felicitaciones
 Duration: 0:01:00
 
-Completaste el codelab.
+Conclusión.
 ```
 
-### Reglas importantes del formato
+*(Las líneas con `##` se muestran sin el símbolo para evitar que claat las interprete como secciones reales de este codelab.)*
+
+### Reglas del formato
 
 | Regla | Correcto | Incorrecto |
 |---|---|---|
-| Metadata sin delimitadores | `id: mi-codelab` al inicio | `---` antes del metadata |
-| Título principal | `# Título` (una sola vez) | Múltiples `#` |
-| Secciones | `## Nombre del paso` | `### Subsección` como paso |
-| Duración | `Duration: 0:05:00` justo después del `##` | Saltar la duración |
-| Campo `id` | Obligatorio, sin espacios | Puede tener guiones |
+| Metadata | Sin `---` delimitadores | Con `---` al inicio |
+| Secciones | `##` seguido del nombre | `###` como sección principal |
+| Duración | `Duration: 0:05:00` justo después del `##` | Saltarse la duración |
+| Campo `id` | Obligatorio, sin espacios | Omitirlo |
+| Feedback link | URL completa a tu índice | Vacío o sin este campo |
 
 ### El campo `feedback link`
 
-Este campo controla a dónde van el botón **Done** y la **X** al terminar el codelab. Ponlo siempre apuntando a tu índice:
+Controla a dónde van el botón **Done** y la **X** al terminar el codelab:
 
 ```
 feedback link: https://TU_USUARIO.github.io/mis-codelabs/
@@ -161,7 +140,9 @@ feedback link: https://TU_USUARIO.github.io/mis-codelabs/
 ## Paso 4 — Crear el workflow de GitHub Actions
 Duration: 0:08:00
 
-Crea el archivo `.github/workflows/deploy-codelabs.yml` con este contenido exacto:
+Crea el archivo `.github/workflows/deploy-codelabs.yml`.
+
+**Parte 1 — Cabecera y permisos:**
 
 ```yaml
 name: Deploy Codelabs to GitHub Pages
@@ -183,7 +164,11 @@ permissions:
 concurrency:
   group: pages
   cancel-in-progress: false
+```
 
+**Parte 2 — Job de build (instalar claat y exportar):**
+
+```yaml
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -205,16 +190,20 @@ jobs:
           mkdir -p site
           CLAAT="$HOME/go/bin/claat"
           for f in codelabs/*.md; do
-            echo "Exporting $f ..."
             "$CLAAT" export -o site/ "$f"
           done
+```
 
+**Parte 3 — Generar el índice (pega esto después del paso anterior):**
+
+```yaml
       - name: Build index page
         run: |
           python3 - << 'PYEOF'
           import os, re, json, subprocess, datetime
 
-          REPO = "mis-codelabs"  # Cambia esto al nombre de tu repo
+          REPO = "mis-codelabs"  # <-- cambia esto al nombre de tu repo
+
           MESES = ["enero","febrero","marzo","abril","mayo","junio",
                    "julio","agosto","septiembre","octubre","noviembre","diciembre"]
 
@@ -261,72 +250,18 @@ jobs:
                   "categories": categories.group(1).strip() if categories else "",
               })
 
-          html = '''<!DOCTYPE html>
-          <html lang="es">
-          <head>
-            <meta charset="UTF-8"/>
-            <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-            <title>Codelabs</title>
-            <style>
-              *{box-sizing:border-box;margin:0;padding:0}
-              body{font-family:Google Sans,Roboto,sans-serif;background:#f8f9fa;min-height:100vh}
-              header{background:#fff;padding:1rem 2rem;border-bottom:1px solid #e0e0e0;display:flex;align-items:center;gap:.75rem}
-              header h1{font-size:1.15rem;color:#202124;font-weight:500}
-              .top{padding:1.5rem 2rem 1rem;max-width:1200px;margin:0 auto}
-              .search{width:100%;padding:.7rem 1.25rem;border:1px solid #dadce0;border-radius:24px;font-size:1rem;outline:none;background:#fff}
-              .search:focus{border-color:#1a73e8;box-shadow:0 1px 6px rgba(26,115,232,.2)}
-              .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem;padding:0 2rem 2rem;max-width:1200px;margin:0 auto}
-              .card{background:#fff;border-radius:8px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.12);display:flex;flex-direction:column;gap:.6rem;transition:box-shadow .2s}
-              .card:hover{box-shadow:0 4px 12px rgba(0,0,0,.18)}
-              .card h2{font-size:1.05rem;color:#202124;line-height:1.4}
-              .meta{display:flex;justify-content:space-between;font-size:.78rem;color:#80868b}
-              .desc{font-size:.88rem;color:#3c4043;line-height:1.55;flex:1}
-              .footer{display:flex;justify-content:space-between;align-items:center;margin-top:.25rem}
-              .tags{display:flex;gap:.4rem;flex-wrap:wrap}
-              .tag{font-size:.72rem;background:#e8f0fe;color:#1a73e8;padding:.2rem .65rem;border-radius:12px;font-weight:500}
-              .btn{background:#fff;color:#1a73e8;border:1px solid #dadce0;padding:.45rem 1.1rem;border-radius:4px;font-size:.88rem;text-decoration:none;font-weight:500}
-              .btn:hover{background:#e8f0fe;border-color:#1a73e8}
-              .empty{text-align:center;color:#80868b;padding:3rem;grid-column:1/-1}
-            </style>
-          </head>
-          <body>
-            <header><h1>Codelabs</h1></header>
-            <div class="top"><input class="search" type="search" placeholder="Busca codelabs..." id="search"/></div>
-            <div class="grid" id="grid"></div>
-            <script>
-              const data=DATA_PLACEHOLDER,grid=document.getElementById("grid"),search=document.getElementById("search");
-              function render(list){
-                grid.innerHTML="";
-                if(!list.length){grid.innerHTML=\'<p class="empty">No se encontraron codelabs.</p>\';return;}
-                list.forEach(e=>{
-                  const tags=(e.categories||"").split(",").map(t=>t.trim()).filter(Boolean).map(t=>`<span class="tag">${t}</span>`).join("");
-                  const card=document.createElement("div");
-                  card.className="card";
-                  card.innerHTML=`<h2>${e.title}</h2>
-                    <div class="meta"><span>${e.duration}</span><span>Updated ${e.updated}</span></div>
-                    <p class="desc">${e.summary}</p>
-                    <div class="footer"><div class="tags">${tags}</div><a class="btn" href="${e.id}/?index=REPO_NAME">Start</a></div>`;
-                  grid.appendChild(card);
-                });
-              }
-              render(data);
-              search.addEventListener("input",()=>{
-                const q=search.value.toLowerCase();
-                render(q?data.filter(e=>e.title.toLowerCase().includes(q)||e.summary.toLowerCase().includes(q)||(e.categories||"").toLowerCase().includes(q)):data);
-              });
-            </script>
-          </body>
-          </html>'''
+          # (el HTML del índice se genera aquí - ver repositorio de ejemplo)
+          # https://github.com/Me7aBen/gdg-codelabs
 
-          html = html.replace("DATA_PLACEHOLDER", json.dumps(entries, ensure_ascii=False))
-          html = html.replace("REPO_NAME", REPO)
-
-          os.makedirs("site", exist_ok=True)
-          with open("site/index.html", "w", encoding="utf-8") as f:
-              f.write(html)
           print(f"Index built with {len(entries)} codelabs.")
           PYEOF
+```
 
+> **Tip:** El HTML completo del índice es largo. Cópialo directamente del repositorio de ejemplo en [github.com/Me7aBen/gdg-codelabs](https://github.com/Me7aBen/gdg-codelabs/blob/main/.github/workflows/deploy-codelabs.yml) — está listo para usar.
+
+**Parte 4 — Deploy (al final del archivo):**
+
+```yaml
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -344,7 +279,15 @@ jobs:
         uses: actions/deploy-pages@v4
 ```
 
-> **Importante:** En el script Python del workflow, cambia la línea `REPO = "mis-codelabs"` al nombre exacto de tu repositorio. Esto es necesario para que el botón Done y la X del codelab regresen correctamente a tu índice.
+### El parámetro `?index=`
+
+El botón **Done** y la **X** del codelab leen el parámetro `?index=` de la URL para saber a dónde regresar. Por eso los links del índice deben verse así:
+
+```
+href="nombre-codelab/?index=mis-codelabs"
+```
+
+Donde `mis-codelabs` es el nombre exacto de tu repositorio. Esto está configurado en la variable `REPO` del script Python del workflow.
 
 ## Paso 5 — Habilitar GitHub Pages
 Duration: 0:03:00
@@ -352,67 +295,50 @@ Duration: 0:03:00
 Este paso se hace una sola vez en la interfaz de GitHub:
 
 1. Ve a tu repositorio en GitHub
-2. Haz clic en **Settings** (pestaña superior)
+2. Haz clic en **Settings**
 3. En el menú izquierdo, haz clic en **Pages**
 4. En "Build and deployment" → Source: selecciona **GitHub Actions**
 5. Guarda
 
-> **¿Por qué es necesario?** Sin este paso, GitHub no sabe que debe publicar el sitio. El workflow puede correr exitosamente pero la URL no existirá.
+> Sin este paso el workflow corre pero el sitio no se publica.
 
-## Paso 6 — Publicar
+## Paso 6 — Publicar y verificar
 Duration: 0:05:00
 
-Con todo listo, haz el primer commit y push:
+### Primer push
 
 ```bash
 git add .
-git commit -m "feat: add codelabs site with first codelab"
+git commit -m "feat: add codelabs site"
 git push origin main
 ```
 
 ### Monitorear el workflow
 
-1. Ve a tu repo en GitHub
-2. Haz clic en la pestaña **Actions**
-3. Verás el workflow "Deploy Codelabs to GitHub Pages" corriendo
-4. Haz clic en él para ver el progreso paso a paso
+1. Ve a la pestaña **Actions** en tu repo
+2. Verás el workflow corriendo — tarda 1-2 minutos
+3. Cuando aparezca la marca ✓ verde, el sitio está publicado
 
-El workflow tarda aproximadamente 1-2 minutos. Cuando termines verás una marca verde ✓.
+### Tu sitio
 
-### Ver tu sitio
-
-Tu sitio estará disponible en:
 ```
 https://TU_USUARIO.github.io/mis-codelabs/
 ```
 
-## Paso 7 — Verificar que todo funciona
-Duration: 0:05:00
+### Checklist de verificación
 
-Abre tu sitio y verifica estos puntos:
-
-**El índice:**
-- ✅ Se ve la tarjeta de tu codelab con título, duración y descripción
-- ✅ El buscador filtra codelabs al escribir
+- ✅ El índice muestra la tarjeta de tu codelab
+- ✅ El buscador filtra al escribir
 - ✅ El botón "Start" abre el codelab
-
-**Dentro del codelab:**
-- ✅ Los pasos aparecen en el panel izquierdo
-- ✅ La navegación Anterior / Siguiente funciona
-- ✅ La X (esquina superior izquierda) regresa al índice
-- ✅ El botón **Done** al final regresa al índice
-
-> Si la X o Done van a `https://TU_USUARIO.github.io/` en lugar de a tu índice, verifica que el nombre del repo en `REPO = "mis-codelabs"` en el workflow coincide exactamente con el nombre de tu repositorio en GitHub.
+- ✅ La X y el botón Done regresan al índice
 
 ## Agregar más codelabs
-Duration: 0:03:00
+Duration: 0:02:00
 
-El proceso para agregar un nuevo codelab es siempre el mismo:
+Para publicar un nuevo codelab:
 
-1. Crea un nuevo archivo `.md` en la carpeta `codelabs/`
-2. Asegúrate de que tenga el campo `id:` con un valor único
-3. Agrega `feedback link: https://TU_USUARIO.github.io/mis-codelabs/`
-4. Haz commit y push
+1. Crea un nuevo `.md` en `codelabs/` con `id:` único y `feedback link:` correcto
+2. Haz commit y push
 
 ```bash
 git add codelabs/mi-nuevo-codelab.md
@@ -420,61 +346,31 @@ git commit -m "feat: add mi-nuevo-codelab"
 git push origin main
 ```
 
-El workflow corre automáticamente, exporta todos los codelabs (incluyendo los anteriores) y actualiza el índice.
+El workflow exporta todos los codelabs y actualiza el índice automáticamente.
 
-> **Tip:** Cada codelab debe tener un `id:` único. Si dos codelabs tienen el mismo `id`, el segundo sobreescribirá al primero.
-
-## Referencia rápida del formato claat
-Duration: 0:00:00
-
-### Estructura mínima de un codelab
-
-```
-id: nombre-unico-sin-espacios
-summary: Descripción breve que aparece en la tarjeta del índice.
-status: Published
-authors: Tu Nombre
-categories: Android, Web, Flutter
-environments: Web
-feedback link: https://TU_USUARIO.github.io/TU_REPO/
-
-# Título del Codelab
-
-## Paso 1
-Duration: 0:05:00
-
-Contenido del paso 1.
-
-## Paso 2
-Duration: 0:10:00
-
-Contenido del paso 2.
-
-## ¡Listo!
-Duration: 0:01:00
-
-Conclusión.
-```
-
-### Errores comunes
+## Errores comunes
+Duration: 0:02:00
 
 | Error | Causa | Solución |
 |---|---|---|
 | `invalid metadata format` | Hay `---` antes del metadata | Quitar los `---` |
-| `missing at least id` | No hay campo `id` o está mal escrito | Verificar que `id:` esté en la primera línea |
-| La X va a la raíz del dominio | El nombre del repo en el workflow no coincide | Actualizar `REPO = "..."` en el workflow |
-| El codelab no aparece en el índice | El `id` está vacío o el archivo no tiene `#` de título | Agregar `id:` y un `# Título` |
-| 404 en el sitio | GitHub Pages no está configurado en "GitHub Actions" | Settings → Pages → Source: GitHub Actions |
+| `missing at least id` | Falta el campo `id:` | Agregar `id:` en la primera línea |
+| La X va a la raíz del dominio | `REPO` no coincide con el nombre del repo | Actualizar `REPO = "..."` en el workflow |
+| 404 en el sitio | Pages no está en modo "GitHub Actions" | Settings → Pages → GitHub Actions |
+| Codelab no aparece en el índice | `id:` vacío o falta `#` de título | Verificar metadata y título |
 
 ## ¡Felicitaciones!
 Duration: 0:01:00
 
-Tienes tu propio sitio de codelabs publicado en GitHub Pages.
+Tienes tu propio sitio de codelabs publicado en GitHub Pages, completamente automatizado.
 
-Cada vez que hagas push de un archivo `.md` en `codelabs/`, el sitio se actualiza automáticamente en 1-2 minutos. No necesitas servidores, no necesitas builds manuales.
+### Repositorio de referencia
+
+El workflow completo y los codelabs de ejemplo están disponibles en:
+[github.com/Me7aBen/gdg-codelabs](https://github.com/Me7aBen/gdg-codelabs)
 
 ### Próximos pasos
 
-- **Personaliza el índice:** Edita el HTML en el paso "Build index page" del workflow para cambiar el título, colores o logo
-- **Agrega más categorías:** Usa el campo `categories:` para organizar los codelabs por tecnología
-- **Comparte el link:** Tu sitio es público — compártelo con tu comunidad
+- Personaliza el HTML del índice (título, colores, logo)
+- Usa `categories:` para organizar codelabs por tecnología
+- Comparte el link con tu comunidad
