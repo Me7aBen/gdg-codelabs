@@ -119,8 +119,9 @@ Tu experiencia XR
 |---|---|---|
 | Chrome 136+ (desktop) | ✅ Completo | Simulador, básicos WebXR |
 | Chrome en Android | ✅ Completo | ARCore, hand tracking, depth |
-| Meta Quest Browser | ✅ Completo | Hand tracking, passthrough AR, plane detection |
-| Samsung Galaxy XR | ✅ Optimizado | Hand tracking, depth sensing, spatial audio |
+| **Meta Quest 3** (Meta Quest Browser) | ✅ Completo | Hand tracking, passthrough AR color, plane detection, depth API, 90Hz |
+| Meta Quest 2 | ✅ Parcial | Hand tracking, passthrough B&W, VR |
+| Samsung Galaxy XR | ✅ Optimizado | Hand tracking, depth sensing, spatial audio, Android XR APIs |
 | Apple Vision Pro (Safari visionOS 2+) | ✅ Habilitado | Gaze + pinch input |
 | Firefox Reality | ✅ Parcial | VR básico |
 
@@ -565,11 +566,13 @@ Lo que ya tienes: la escena corre con el simulador de XR Blocks, que permite mov
 
 Abre la URL en Chrome para Android en un teléfono compatible con ARCore. Si tu teléfono soporta ARCore, verás la opción de activar modo AR — los objetos aparecen sobre el mundo real captado por la cámara.
 
-### En Meta Quest
+### En Meta Quest 3
 
-Abre Chrome u el **Meta Quest Browser** en el headset y navega a tu URL. Meta Quest tiene soporte completo de WebXR incluyendo hand tracking y passthrough AR. Tu experiencia carga directamente — sin instalar nada, sin pasar por la Horizon Store.
+Abre el **Meta Quest Browser** en el headset y navega a tu URL. El Quest 3 tiene soporte completo de WebXR incluyendo hand tracking, passthrough AR a color, plane detection, y Depth API. Tu experiencia carga directamente — sin instalar nada, sin pasar por la Horizon Store.
 
-> **Nota sobre Meta Quest:** Las APIs específicas de Android XR (como el depth sensing del hardware Galaxy XR) no están disponibles en Meta Quest. Pero la escena 3D, la física, y el seguimiento de manos funcionan correctamente.
+> **Quest 3 vs Android XR:** La escena 3D, física, hand tracking y passthrough funcionan igual de bien en Quest 3. Lo que no estará disponible es el raw camera access (API de visión por computadora del hardware Galaxy XR), pero XR Blocks degrada graciosamente — la experiencia visual es equivalente.
+
+> **Tip para practicar sin el headset:** Instala la extensión [Immersive Web Emulator](https://chromewebstore.google.com/detail/immersive-web-emulator/cgffilbpcibhmcfbgggfhfolhkfbhmik) de Meta en Chrome. Simula el Quest directamente en el navegador de escritorio, ideal para probar antes de ponerte el headset.
 
 ### En Samsung Galaxy XR
 
