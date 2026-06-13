@@ -1,5 +1,5 @@
 id: pomodorotec-v2
-summary: Aprende a construir una app Android de productividad usando agentes de IA, Android CLI y Gemini CLI. No se requiere experiencia previa en Android.
+summary: Aprende a construir una app Android de productividad usando agentes de IA, Android CLI y Antigravity CLI. No se requiere experiencia previa en Android.
 status: Published
 authors: GDG Local
 categories: Android
@@ -33,22 +33,18 @@ Antes de comenzar, necesitas tener instalado:
 |---|---|
 | **Android Studio** (versión Ladybug o superior) | Instala el Android SDK que todo lo demás necesita |
 | **JDK 17 o superior** | Compila el código Kotlin |
-| **Node.js 18 o superior** | Para instalar Gemini CLI |
-
 **¿Cómo verifico si ya los tengo?** Abre una terminal y escribe:
 
 ```bash
 java -version   # debe mostrar 17 o mayor
-node -v         # debe mostrar 18 o mayor
 ```
 
-Si alguno falla o muestra una versión menor, instálalo antes de continuar:
+Si falla o muestra una versión menor, instálalo antes de continuar:
 
 - Android Studio → [developer.android.com/studio](https://developer.android.com/studio)
 - JDK → [adoptium.net](https://adoptium.net) (descarga Temurin 17 LTS)
-- Node.js → [nodejs.org](https://nodejs.org) (descarga la versión LTS)
 
-También necesitarás una **cuenta de Google** para obtener el API Key de Gemini (gratuito).
+También necesitarás una **cuenta de Google** para autenticarte en Antigravity CLI (gratuito).
 
 ## Paso 1 — Instalar las herramientas
 Duration: 0:10:00
@@ -89,14 +85,30 @@ Verifica que se instaló correctamente:
 android --version
 ```
 
-### Instalar Gemini CLI
+### Instalar Antigravity CLI
 
+Antigravity CLI (`agy`) es el sucesor oficial de Gemini CLI, anunciado en Google I/O 2026. Es un binario estático (~15MB) que no requiere Node.js.
+
+> **¿Usás el IDE de Antigravity desktop?** No necesitás instalar `agy` por separado — el agente viene incluido en el IDE. Las conversaciones las hacés en el panel de chat, y los comandos `android` los ejecutás desde la terminal integrada del IDE. Instalá las Android Skills desde **Settings → Customizations → Build With Google Plugins** en lugar de `android skills add --all`. El resto del codelab aplica igual.
+
+**macOS / Linux:**
 ```bash
-npm install -g @google/gemini-cli
-gemini --version
+curl -fsSL https://antigravity.google/cli/install.sh | bash
+export PATH="$HOME/.local/bin:$PATH"
+agy --version
 ```
 
-### Obtener el API Key de Gemini
+**Windows (PowerShell):**
+```powershell
+irm https://antigravity.google/cli/install.ps1 | iex
+agy --version
+```
+
+### Autenticarse en Antigravity CLI
+
+Antigravity CLI usa **OAuth por defecto**: al ejecutar `agy` por primera vez, abrirá el navegador para que inicies sesión con tu cuenta de Google. No requiere crear un API Key manualmente.
+
+Si preferís autenticarte con un API Key (para entornos sin interfaz gráfica):
 
 1. Ve a [aistudio.google.com](https://aistudio.google.com)
 2. Inicia sesión con tu cuenta de Google
@@ -107,21 +119,23 @@ Configúrala en tu sistema:
 
 **macOS / Linux:**
 ```bash
-export GEMINI_API_KEY="pega-tu-clave-aqui"
-echo 'export GEMINI_API_KEY="pega-tu-clave-aqui"' >> ~/.zshrc
+export ANTIGRAVITY_API_KEY="pega-tu-clave-aqui"
+echo 'export ANTIGRAVITY_API_KEY="pega-tu-clave-aqui"' >> ~/.zshrc
 source ~/.zshrc
 ```
 
 **Windows:**
 ```powershell
-$env:GEMINI_API_KEY = "pega-tu-clave-aqui"
-[System.Environment]::SetEnvironmentVariable("GEMINI_API_KEY", "pega-tu-clave-aqui", "User")
+$env:ANTIGRAVITY_API_KEY = "pega-tu-clave-aqui"
+[System.Environment]::SetEnvironmentVariable("ANTIGRAVITY_API_KEY", "pega-tu-clave-aqui", "User")
 ```
 
 Prueba que funciona:
 ```bash
-gemini "Responde solo esto: configuración correcta"
+agy "Responde solo esto: configuración correcta"
 ```
+
+> **¿Venías usando Gemini CLI?** Migrá tu configuración con un solo comando: `agy plugin import gemini` — importa tus servidores MCP, comandos permitidos y configuración visual sin tocar el directorio original.
 
 ### Inicializar el entorno Android para agentes
 
@@ -148,9 +162,9 @@ La razón es simple: un agente de IA no puede construir algo que no entiende. Cu
 
 ### El meta-prompt: darle contexto al agente
 
-Abre Gemini CLI:
+Abre Antigravity CLI:
 ```bash
-gemini
+agy
 ```
 
 Escribe este mensaje, adaptando las partes en corchetes con tu propia idea de app (o usa PomodoroTec como ejemplo):
@@ -338,10 +352,10 @@ Duration: 0:08:00
 
 En lugar de darte los prompts de construcción directamente, le pediremos al agente que los genere.
 
-### Abrir Gemini CLI en el proyecto
+### Abrir Antigravity CLI en el proyecto
 
 ```bash
-gemini
+agy
 ```
 
 Al abrirse dentro de la carpeta `PomodoroTec`, el agente automáticamente tiene acceso a tu `AGENTS.md` y las Android Skills.
@@ -388,7 +402,7 @@ La separación existe por una razón práctica: si mezclamos la lógica con la i
 
 ### Ejecutar el primer prompt
 
-En Gemini, escribe el **Prompt 1** que generaste en el paso anterior.
+En Antigravity, escribe el **Prompt 1** que generaste en el paso anterior.
 
 El agente creará varios archivos nuevos:
 
@@ -437,7 +451,7 @@ El historial usa **Room**, la forma oficial de Android de guardar datos estructu
 
 ### Ejecutar el segundo prompt
 
-En Gemini, escribe el **Prompt 2**.
+En Antigravity, escribe el **Prompt 2**.
 
 El agente creará:
 
@@ -470,7 +484,7 @@ La diferencia con Room: Room guarda listas de registros. DataStore guarda config
 
 ### Ejecutar el tercer prompt
 
-En Gemini, escribe el **Prompt 3**.
+En Antigravity, escribe el **Prompt 3**.
 
 El agente creará:
 
@@ -495,7 +509,7 @@ Conectaremos las tres pantallas con una barra de navegación inferior usando **N
 
 ### Ejecutar el cuarto prompt
 
-En Gemini, escribe el **Prompt 4**.
+En Antigravity, escribe el **Prompt 4**.
 
 El agente creará o modificará:
 
@@ -534,7 +548,7 @@ Este comando compila el código Kotlin, empaqueta todo en un APK, e instala ese 
 
 ### ¿Y si hay un error de compilación?
 
-Copia el error completo y pégalo en Gemini:
+Copia el error completo y pégalo en Antigravity:
 
 ```
 Tengo este error al compilar:
@@ -648,8 +662,9 @@ Duration: 0:00:00
 
 ```bash
 # Instalación (una sola vez)
+curl -fsSL https://antigravity.google/cli/install.sh | bash   # macOS / Linux
+# irm https://antigravity.google/cli/install.ps1 | iex        # Windows PowerShell
 android init
-npm install -g @google/gemini-cli
 
 # Por proyecto nuevo
 android create --name=NombreApp --package=com.paquete.app
@@ -657,7 +672,7 @@ cd NombreApp
 android skills add --all
 
 # Flujo diario
-gemini                    # iniciar el agente
+agy                       # iniciar el agente
 android emulator create   # crear emulador (una vez)
 android emulator start    # iniciar emulador
 android run               # compilar e instalar
@@ -694,6 +709,6 @@ android docs search "tema" # buscar en la Knowledge Base oficial
 
 - **Android Skills**: [developer.android.com/android-skills](https://developer.android.com/android-skills)
 - **Android CLI**: [developer.android.com/tools/android-cli](https://developer.android.com/tools/android-cli)
-- **Gemini CLI**: [geminicli.com](https://geminicli.com)
+- **Antigravity CLI**: [antigravity.google](https://antigravity.google)
 - **Jetpack Compose**: [developer.android.com/compose](https://developer.android.com/compose)
 - **Material Design 3**: [m3.material.io](https://m3.material.io)
