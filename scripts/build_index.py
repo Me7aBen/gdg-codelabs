@@ -18,6 +18,7 @@ from html import escape
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import analytics
+import claat_assets
 
 MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio",
          "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
@@ -226,6 +227,12 @@ data.forEach(e => grid.appendChild(card(e, "../")));"""
         os.makedirs(out, exist_ok=True)
         with open(os.path.join(out, "index.html"), "w", encoding="utf-8") as f:
             f.write(page(meta["titulo"], body, script, "curso", meta["slug"]))
+
+    # formato de claat servido desde el propio sitio (el bucket de Google ya no responde)
+    ids = [e["id"] for e in standalone] + [e["id"] for _, labs in courses for e in labs]
+    claat_assets.copy_assets(site_dir)
+    localized = sum(claat_assets.localize_codelab(site_dir, i) for i in ids)
+    print(f"Formato de claat: {len(claat_assets.FILES)} archivos en {site_dir}/claat-public · {localized} codelabs actualizados")
 
     # analítica en cada codelab exportado por claat
     injected = 0
