@@ -6,6 +6,7 @@ los archivos guardados en scripts/vendor/claat-public/ a site/claat-public/ y se
 cada codelab exportado (site/<id>/index.html) para que los lean de ahí con una ruta relativa.
 """
 import os
+import re
 import shutil
 
 REMOTE = "https://storage.googleapis.com/claat-public/"
@@ -32,4 +33,33 @@ def localize_codelab(site_dir, codelab_id):
         html = f.read()
     with open(path, "w", encoding="utf-8") as f:
         f.write(html.replace(REMOTE, LOCAL))
+    return True
+
+
+PLAIN_START = "<!-- gdg-plain-blocks:start -->"
+PLAIN_END = "<!-- gdg-plain-blocks:end -->"
+PLAIN_CSS = (
+    PLAIN_START + "<style>"
+    "google-codelab-step pre.sin-resaltado,google-codelab-step pre.sin-resaltado code{color:#F8F9FA}"
+    "google-codelab-step pre.sin-resaltado code span{color:inherit!important;font-style:normal!important;font-weight:inherit!important}"
+    "</style>" + PLAIN_END
+)
+
+
+def plain_code_blocks(site_dir, codelab_id):
+    """Quita el resaltado de sintaxis de los bloques sin lenguaje (prompts, plantillas, ejemplos de texto).
+
+    El reproductor de claat resalta todo bloque `pre code` adivinando el lenguaje, y en texto normal eso pinta
+    palabras sueltas de colores distintos. Los bloques con lenguaje (```bash, ```yaml...) no se tocan.
+    """
+    path = os.path.join(site_dir, codelab_id, "index.html")
+    if not os.path.exists(path):
+        return False
+    with open(path, encoding="utf-8") as f:
+        html = f.read()
+    html = re.sub(re.escape(PLAIN_START) + r".*?" + re.escape(PLAIN_END), "", html, flags=re.S)
+    html = html.replace("<pre><code>", '<pre class="sin-resaltado"><code>')
+    html = html.replace("</head>", PLAIN_CSS + "\n</head>", 1)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(html)
     return True

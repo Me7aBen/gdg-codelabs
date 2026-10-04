@@ -233,6 +233,9 @@ data.forEach(e => grid.appendChild(card(e, "../")));"""
     claat_assets.copy_assets(site_dir)
     localized = sum(claat_assets.localize_codelab(site_dir, i) for i in ids)
     print(f"Formato de claat: {len(claat_assets.FILES)} archivos en {site_dir}/claat-public · {localized} codelabs actualizados")
+    # en los laboratorios de los cursos, los bloques sin lenguaje (prompts) van en un solo color
+    plain = sum(claat_assets.plain_code_blocks(site_dir, e["id"]) for _, labs in courses for e in labs)
+    print(f"Bloques de texto sin resaltado: {plain} codelabs de cursos")
 
     # analítica en cada codelab exportado por claat
     injected = 0
