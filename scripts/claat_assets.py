@@ -63,3 +63,43 @@ def plain_code_blocks(site_dir, codelab_id):
     with open(path, "w", encoding="utf-8") as f:
         f.write(html)
     return True
+
+
+HOME_START = "<!-- gdg-home:start -->"
+HOME_END = "<!-- gdg-home:end -->"
+
+
+def fix_home_links(site_dir, codelab_id, home):
+    """Hace que la X y el botón "Done" vuelvan a `home` (ruta relativa al codelab, p. ej. "../curso/").
+
+    El reproductor de claat arma esos enlaces con el parámetro ?index= de la URL y, si falta (enlaces
+    directos, como los de las fichas), apunta a la raíz del dominio, que en GitHub Pages no existe.
+    """
+    path = os.path.join(site_dir, codelab_id, "index.html")
+    if not os.path.exists(path):
+        return False
+    with open(path, encoding="utf-8") as f:
+        html = f.read()
+    html = re.sub(re.escape(HOME_START) + r".*?" + re.escape(HOME_END), "", html, flags=re.S)
+    script = f"""{HOME_START}
+<script>
+(function () {{
+  var home = new URL("{home}", location.href).href;
+  function fix() {{
+    var found = false;
+    ["#arrow-back", "#done"].forEach(function (sel) {{
+      var a = document.querySelector(sel);
+      if (a) {{ a.setAttribute("href", home); found = true; }}
+    }});
+    return found;
+  }}
+  // el reproductor crea los enlaces al iniciar: se corrigen apenas aparecen
+  var tries = 0, timer = setInterval(function () {{ if (fix() || ++tries > 100) clearInterval(timer); }}, 100);
+  document.addEventListener("google-codelab-action", fix, true);
+}})();
+</script>
+{HOME_END}"""
+    html = html.replace("</body>", script + "\n</body>", 1)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(html)
+    return True

@@ -233,6 +233,13 @@ data.forEach(e => grid.appendChild(card(e, "../")));"""
     claat_assets.copy_assets(site_dir)
     localized = sum(claat_assets.localize_codelab(site_dir, i) for i in ids)
     print(f"Formato de claat: {len(claat_assets.FILES)} archivos en {site_dir}/claat-public · {localized} codelabs actualizados")
+    # la X y "Done" vuelven a la página del curso (o al índice), aunque el enlace no traiga ?index=
+    for e in standalone:
+        claat_assets.fix_home_links(site_dir, e["id"], "../")
+    for meta, labs in courses:
+        for e in labs:
+            claat_assets.fix_home_links(site_dir, e["id"], f"../{meta['slug']}/")
+
     # en los laboratorios de los cursos, los bloques sin lenguaje (prompts) van en un solo color
     plain = sum(claat_assets.plain_code_blocks(site_dir, e["id"]) for _, labs in courses for e in labs)
     print(f"Bloques de texto sin resaltado: {plain} codelabs de cursos")
