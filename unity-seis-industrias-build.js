@@ -4,6 +4,13 @@ const fs = require("fs");
 const M = "/Users/bpareja/gdg-codelabs/unity-seis-industrias-media/";
 const OUT = "/Users/bpareja/gdg-codelabs/unity-seis-industrias.pptx";
 const img = (f) => path.join(M, f);
+const DIMS = JSON.parse(fs.readFileSync(path.join(M, "dims.json"), "utf8"));
+// Caja que respeta la proporción de la imagen dentro de (x,y,w,h), centrada
+function fitBox(file, x, y, w, h) {
+  const d = DIMS[file]; if (!d) return { x, y, w, h };
+  const r = d[0] / d[1]; let fw = w, fh = w / r; if (fh > h) { fh = h; fw = h * r; }
+  return { x: x + (w - fw) / 2, y: y + (h - fh) / 2, w: fw, h: fh };
+}
 const ex = (f) => fs.existsSync(img(f));
 
 // Paleta Coresearch
@@ -56,7 +63,9 @@ function frame(s, x, y, w, h) {
 }
 function pic(s, file, x, y, w, h, opts = {}) {
   if (!ex(file)) { s.addShape(pres.ShapeType.rect, { x, y, w, h, fill: { color: SURF }, line: { color: LINE, width: 0.75 } }); body(s, "[IMAGEN PENDIENTE: " + file + "]", x + 0.2, y + h / 2 - 0.25, w - 0.4, 0.5, 11, { align: "center" }); return; }
-  const o = { path: img(file), x, y, w, h, sizing: { type: "cover", w, h } };
+  if (!opts.noframe) ({ x, y, w, h } = fitBox(file, x, y, w, h));
+  const o = { path: img(file), x, y, w, h };
+  if (opts.noframe) o.sizing = { type: "cover", w, h };
   if (opts.link) o.hyperlink = { url: opts.link, tooltip: "Abrir video" };
   if (opts.transparency) o.transparency = opts.transparency;
   s.addImage(o); if (!opts.noframe) frame(s, x, y, w, h);
@@ -114,22 +123,22 @@ s.addNotes("Treinta segundos, no más. Lo único que debe quedar: este tipo cons
 // ===================== 1. NOTICIAS =====================
 s = slide();
 chapter(s, "Sección 1", "Lo que acaba de pasar en *XR*", "Tres noticias de los últimos cuatro meses");
-pic(s, "s05-meta-connect-keynote.jpg", 8.9, 4.3, 3.8, 2.14, { link: "https://youtu.be/SdKFDIAGF24", caption: "Meta Connect Keynote 2026 · canal Meta · 20 s de las VR Glasses" });
+pic(s, "v-meta-connect-recap.jpg", 8.9, 4.3, 3.8, 2.14, { link: "https://youtu.be/Xr-EDQ5w-DI", caption: "Everything you missed at Meta Connect 2026 · Meta · 3:24 · 0:00 a 0:40" });
 
 s = slide();
 lab(s, "2026 en tres fechas", MX, 0.6, 6, { orange: "§ 01" });
 title(s, "Lo que cambió este año", MX, 1.0, 9, 0.9, 40);
 const news = [
-  ["s05-android-xr-eyewear-io26.jpg", "19 MAY", "Android XR SDK, Developer Preview 4", "Un solo SDK para visores, gafas con cable y gafas con pantalla o audio. Si sabes Android, ya tienes ventaja.", "https://youtu.be/otzSN5pSNZk"],
-  ["s05-unity-6.jpg", "16 JUN", "Unity 6.5: Galaxy XR y XREAL Aura con un solo APK", "Un proyecto, varios dispositivos Android XR. Sin reescribir.", null],
-  ["s05-meta-connect-keynote.jpg", "23 SEP", "Meta Connect: Meta VR Glasses", "Unos 100 gramos, pantalla 5K, cómputo en un puck. Llegan en 2027. El visor deja de ser un casco.", "https://youtu.be/SdKFDIAGF24"],
+  ["v-gemini-glasses.jpg", "19 MAY", "Android XR SDK, Developer Preview 4", "Un solo SDK para visores, gafas con cable y gafas con pantalla o audio. Si sabes Android, ya tienes ventaja.", "https://youtu.be/s4Lav_gsMPo", "Gemini en tus gafas · Google · 2:16 · 0:00 a 0:30"],
+  ["v-xreal-aura.jpg", "16 JUN", "Unity 6.5: Galaxy XR y XREAL Aura con un solo APK", "Un proyecto, varios dispositivos Android XR. Sin reescribir.", "https://youtu.be/gN41OhBdADs", "XREAL Aura · canal XREAL · 1:01 · completo"],
+  ["v-meta-vr-glasses.jpg", "23 SEP", "Meta Connect: Meta VR Glasses", "Unos 100 gramos, pantalla 5K, cómputo en un puck. Llegan en 2027. El visor deja de ser un casco.", "https://youtu.be/xyD_bmMy5nQ", "Introducing Meta VR Glasses · Meta VR · 1:27 · 0:00 a 0:30"],
 ];
-news.forEach(([f, d, h, t, link], i) => {
+news.forEach(([f, d, h, t, link, vcap], i) => {
   const x = MX + i * 4.1, cw = 3.9;
-  pic(s, f, x, 2.05, cw, 2.0, link ? { link, caption: "Video · YouTube" } : {});
-  s.addText(d, { x, y: 4.45, w: cw, h: 0.35, fontFace: MONO, fontSize: 14, bold: true, color: OR, margin: 0, isTextBox: true });
-  body(s, h, x, 4.8, cw, 0.7, 16, { color: T0 });
-  body(s, t, x, 5.5, cw, 0.9, 13);
+  pic(s, f, x, 1.9, cw, 2.0, link ? { link, caption: vcap } : {});
+  s.addText(d, { x, y: 4.55, w: cw, h: 0.35, fontFace: MONO, fontSize: 14, bold: true, color: OR, margin: 0, isTextBox: true });
+  body(s, h, x, 4.9, cw, 0.65, 15, { color: T0 });
+  body(s, t, x, 5.55, cw, 0.75, 12);
 });
 SRC(s, "Fuentes: developer.android.com (19.05.2026) · discussions.unity.com (16.06.2026) · meta.com/blog (23.09.2026)");
 s.addNotes("Lee la columna de 'qué significa para ti', no las especificaciones. Si preguntan el precio de las Meta VR Glasses: US$1.299,99 según Meta.");
@@ -145,6 +154,16 @@ title(s, "Meta y Android XR", MX, 1.0, 9, 0.9, 40);
 });
 body(s, "El problema común: ambos necesitan contenido 3D interactivo. Y eso se construye con un motor.", MX, 5.6, 12, 0.6, 18, { color: OR });
 s.addNotes("Aquí haces el puente a Unity: las plataformas cambian cada año; el motor con el que construyes el contenido, no.");
+
+s = slide();
+lab(s, "Android XR, en una lámina", MX, 0.6, 8, { orange: "§ 01" });
+title(s, "La plataforma XR de Google, y lo que ya se puede comprar", MX, 1.0, 7.0, 1.3, 30);
+bullets(s, ["Android XR es la versión de Android para visores y gafas, con Gemini integrado. Google pone el sistema; Samsung, XREAL y otros ponen el hardware.", "Galaxy XR (Samsung): el único visor Android XR a la venta hoy. Visor completo, tipo Quest o Vision Pro.", "XREAL Aura: gafas con cable que llevan el cómputo en un puck; anunciadas para fines de 2026.", "Gafas con Gemini (Samsung, Warby Parker, Gentle Monster): audio y pantalla, sin visor; las primeras llegan en otoño.", "Para desarrollar: Jetpack XR si vienes de Android nativo; Unity, Unreal o Godot si vienes del 3D. Unity 6.5 exporta a Galaxy XR y Aura con un solo APK."], MX, 2.45, 6.9, 3.8, 14);
+[["v-galaxy-xr.jpg", "https://youtu.be/MPwZscUoly4", "Introducing Galaxy XR · Samsung · 3:47 · 0:00 a 0:30"], ["v-android-xr-engines.jpg", "https://youtu.be/nmbBWSX8l54", "Android XR con tu motor 3D · Android Developers · 2:35 · 0:00 a 0:40"]].forEach(([f, link, cap], i) => {
+  pic(s, f, 8.3, 1.0 + i * 2.65, 4.4, 2.1, { link, caption: cap });
+});
+SRC(s, "Fuentes: developer.android.com (DP4, 19.05.2026) · discussions.unity.com (Unity 6.5, 16.06.2026) · XREAL, AWE 2026");
+s.addNotes("Dos minutos. La idea: Android entra a XR con varios formatos a la vez, y Unity ya exporta a todos. Si alguien pregunta por precios: Galaxy XR salió a US$1.799 en octubre de 2025; el de Aura no está anunciado.");
 
 s = slide("PLAIN");
 title(s, "Las plataformas cambian cada año.\nLo que construyes *dentro*, no.", MX, 1.8, 12, 3.0, 54);
@@ -192,7 +211,7 @@ industry("01", "Videojuegos", "US$2 M", "Google Play Indie Games Fund para Latin
   "s12-dicefolk.jpg", "https://youtu.be/D5QpseqnV6c", "unity.com/blog/google-play-indie-games-fund-2024-winners (16.12.2024)", "Dicefolk · tráiler oficial · LEAP Game Studios · 0:31");
 industry("02", "Cine y animación", null, "Rodar *dentro* del motor",
   ["Estudios de producción virtual usan Unity para previsualizar, iluminar y renderizar en tiempo real, sin esperar horas por cada cuadro.", "El director mueve la cámara y ve el resultado al instante.", "Lo que Renzo esculpe en ZBrush termina en un motor como este."],
-  "s13-unity-virtual-production-siggraph.jpg", "https://youtu.be/Bn-QU4iGbw0", "Unity, SIGGRAPH 2022: Real-time virtual production (sin cifras públicas)", "Charla de Unity en SIGGRAPH 2022 · elige 30 s con set LED").addNotes("Aquí no hay cifra, y está bien. Di que es cualitativo. Conecta con la charla de Renzo.");
+  "v-time-ghost.jpg", "https://youtu.be/o1JIK5W3DRU", "Unity: Time Ghost, demo cinematográfica en tiempo real (2024); producción virtual sin cifras públicas", "Time Ghost | Unity 6 · canal Unity · 4:27 · 0:00 a 0:30, sin audio").addNotes("Aquí no hay cifra, y está bien. Di que es cualitativo. Conecta con la charla de Renzo.");
 industry("03", "Arquitectura y construcción", "15–20 %", "Mejora de eficiencia reportada por Sitowise (Finlandia) con Aura, un gemelo digital urbano 3D construido en Unity.",
   ["Un gemelo digital es una copia 3D de algo real que se actualiza con datos.", "Sirve para decidir antes de construir.", "La misma lógica de un simulador de entrenamiento, aplicada a una ciudad."],
   "s14-sitowise.jpg", null, "unity.com/case-study/sitowise (18.07.2025)");
@@ -284,10 +303,18 @@ body(s, "Jerarquía del taller → componentes de la broca → Play. Nada más."
 s.addNotes("Solo si sobra tiempo. Proyecto ya abierto. Tres cosas y nada más. No compiles.");
 
 s = slide("PLAIN");
-s.addImage({ path: img("logo-coresearch.png"), x: MX, y: 1.4, h: 1.1, w: 0.58 });
-title(s, "Gracias", MX, 2.7, 10, 1.4, 72);
-body(s, "Benjamin Pareja · LinkedIn: @me7aben · coresearch.studio", MX, 4.2, 10, 0.5, 20, { color: T1 });
-body(s, "Arequipa XR Day · GDG Arequipa · Perú Tech Week 2026", MX, 4.75, 10, 0.5, 16);
+s.addImage({ path: img("logo-coresearch.png"), x: MX, y: 1.0, h: 1.1, w: 0.58 });
+title(s, "Gracias", MX, 2.2, 7, 1.4, 72);
+body(s, "Benjamin Pareja · Coresearch", MX, 3.7, 7, 0.5, 20, { color: T1 });
+body(s, "Arequipa XR Day · GDG Arequipa · Perú Tech Week 2026", MX, 4.25, 7, 0.5, 16);
+[["qr-linkedin.png", "Benjamin en LinkedIn", "linkedin.com/in/me7aben"], ["qr-coresearch.png", "Coresearch", "coresearch.studio"]].forEach(([f, h, u], i) => {
+  const x = 8.0 + i * 2.6;
+  s.addShape(pres.ShapeType.rect, { x, y: 1.0, w: 2.3, h: 3.5, fill: { color: "FFFFFF" }, line: { color: "FFFFFF" } });
+  s.addImage({ path: img(f), x: x + 0.15, y: 1.15, w: 2.0, h: 2.0 });
+  s.addText(h, { x: x + 0.15, y: 3.2, w: 2.0, h: 0.4, fontFace: SANS, fontSize: 14, bold: true, color: "131313", margin: 0, isTextBox: true, align: "center" });
+  s.addText(u, { x: x + 0.15, y: 3.6, w: 2.0, h: 0.4, fontFace: MONO, fontSize: 9, color: "555555", margin: 0, isTextBox: true, align: "center" });
+});
+lab(s, "Escanea para seguirnos", 8.0, 4.65, 5, { size: 9 });
 allies(s, MX, 6.3);
 s.addImage({ path: img("logo-tecsup.png"), x: MX + 7.4, y: 6.3, h: 0.42, w: 0.42 * 761 / 220 });
 
