@@ -83,7 +83,12 @@ function chapter(s, kicker, t, sub, bgfile) {
 }
 const SRC = (s, t) => lab(s, t, MX, 6.3, 12, { size: 9 });
 
+const OBS = "/Users/bpareja/Repositorios/Coresearch/marketing/evento-xr-labs-latam/obs/";
+function full(file, note) { const sl = pres.addSlide({ masterName: "PLAIN" }); sl.addImage({ path: OBS + file, x: 0, y: 0, w: W, h: H }); if (note) sl.addNotes(note); n++; return sl; }
+
 // ===================== APERTURA =====================
+full("slide-01-inicio.png", "Pantalla de espera mientras llega la gente. Bienvenida y agenda del día.");
+full("slide-02-evento.png", "Nombre del evento en grande. Dejarla al presentar la charla y en pausas.");
 let s = slide("PLAIN");
 pic(s, "s01-s26-broca-quest.jpg", 0, 0, W, H, { transparency: 65, noframe: true });
 s.addImage({ path: img("logo-coresearch.png"), x: MX, y: 0.6, h: 0.9, w: 0.47 });
@@ -285,5 +290,8 @@ body(s, "Benjamin Pareja · LinkedIn: @me7aben · coresearch.studio", MX, 4.2, 1
 body(s, "Arequipa XR Day · GDG Arequipa · Perú Tech Week 2026", MX, 4.75, 10, 0.5, 16);
 allies(s, MX, 6.3);
 s.addImage({ path: img("logo-tecsup.png"), x: MX + 7.4, y: 6.3, h: 0.42, w: 0.42 * 761 / 220 });
+
+full("slide-03-agradecimientos.png", "Agradecimientos: Coresearch, Tecsup, Perú Tech Week y GDG Arequipa.");
+full("slide-04-cierre.png", "Cierre del evento: compartir con #ArequipaXRDay, seguir a coresearch.studio y @gdgaqp.");
 
 pres.writeFile({ fileName: OUT }).then(() => console.log("OK", OUT, n, "slides"));
