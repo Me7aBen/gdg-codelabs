@@ -1,7 +1,7 @@
 id: taller-xr-unity
 summary: Guía práctica del taller XR de las semanas 9-11 del curso de Unity. Construye una experiencia de realidad virtual o aumentada en Unity 6 LTS y despliégala en uno de los 14 dispositivos XR disponibles: Meta Quest 3, iPhone, iPad Pro, tablets Samsung o Samsung Galaxy XR.
 status: Published
-authors: GDG Local
+authors: Benjamin Pareja
 categories: XR, Unity, AR, VR, OpenXR
 environments: Web
 feedback link: https://me7aben.github.io/gdg-codelabs/

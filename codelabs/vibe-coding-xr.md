@@ -1,7 +1,7 @@
 id: vibe-coding-xr
 summary: Crea tu primera experiencia de realidad extendida usando solo lenguaje natural. Con el XR Blocks Gem de Gemini generarás una escena XR interactiva con física y la publicarás en una URL pública. Incluye marco teórico completo sobre XR, WebXR y el ecosistema de Google.
 status: Published
-authors: GDG Local
+authors: Benjamin Pareja
 categories: AI, XR, WebXR, Gemini
 environments: Web
 feedback link: https://me7aben.github.io/gdg-codelabs/

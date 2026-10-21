@@ -1,7 +1,7 @@
 id: pomodorotec-v2
 summary: Aprende a construir una app Android de productividad usando agentes de IA, Android CLI y Antigravity CLI. No se requiere experiencia previa en Android.
 status: Published
-authors: GDG Local
+authors: Benjamin Pareja
 categories: Android
 environments: Web
 feedback link: https://me7aben.github.io/gdg-codelabs/

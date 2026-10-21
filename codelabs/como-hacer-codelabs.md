@@ -1,7 +1,7 @@
 id: como-hacer-codelabs
 summary: Aprende a crear y publicar tus propios codelabs en GitHub Pages usando claat y GitHub Actions. Sin servidores, sin dependencias complicadas.
 status: Published
-authors: GDG Local
+authors: Benjamin Pareja
 categories: DevTools, GitHub
 environments: Web
 feedback link: https://me7aben.github.io/gdg-codelabs/

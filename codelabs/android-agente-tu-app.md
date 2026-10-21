@@ -1,7 +1,7 @@
 id: android-agente-tu-app
 summary: Construye tu propia app Android conversando con un agente de IA. Sin experiencia previa en Android — terminas con tu idea corriendo en un emulador real.
 status: Published
-authors: GDG Local
+authors: Benjamin Pareja
 categories: Android
 environments: Web
 feedback link: https://me7aben.github.io/gdg-codelabs/
