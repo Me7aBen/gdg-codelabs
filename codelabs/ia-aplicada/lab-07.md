@@ -23,7 +23,7 @@ Es tu **punto de control**: el docente revisará tu v1 contigo durante el taller
 |---|---|
 | `Proyecto_v1_Apellido_Nombre.pbix` | Tu dashboard v1 |
 | `Proyecto_v1_Apellido_Nombre.png` | Captura de la página completa |
-| `Lab07_Apellido_Nombre.pdf` | Ficha de evidencia con tu checklist de diseño y tu lista de mejoras |
+| `Lab07_Apellido_Nombre.pdf` | Ficha de evidencia: un documento de Word que descargas de la tarea "Laboratorio 7", con tu hallazgo, tu checklist de diseño y tu lista de mejoras |
 
 ### Lo que necesitas
 
@@ -33,6 +33,7 @@ Es tu **punto de control**: el docente revisará tu v1 contigo durante el taller
 | Herramienta de IA | ChatGPT, Gemini o Copilot Chat. Para el paso 5.3 necesitas que acepte imágenes (las tres lo permiten). |
 | Excel | Tu Excel limpio, para confirmar hallazgos. |
 | Tu ficha de KPI (S5) | Para revisar que tus medidas siguen tu definición y para mostrar las metas. |
+| Tu ficha de evidencia | El Word de la tarea "Laboratorio 7" del LMS. Complétala mientras avanzas. |
 
 > **Ojo:** ¿usas Mac? Sigue con la opción que elegiste en el Laboratorio 6 (equipo Windows, pareja, web o máquina virtual). Los visuales de influenciadores clave y árbol de descomposición también existen en Power BI en la web. Si trabajas en Power BI en la web: en lugar del .pbix, entrega lo que acordaste con el docente en el Laboratorio 6 (por ejemplo, el PDF exportado del informe con **Exportar › PDF**, además de tu captura). Para el paso 4.2, abre en Excel (también en Mac) tu consulta de limpieza de la S4 en el Editor de Power Query, entra al Editor avanzado y copia ese código.
 
@@ -251,20 +252,21 @@ Duration: 0:03:00
 2. Captura la página completa con **Windows + Shift + S** y guárdala como `Proyecto_v1_Apellido_Nombre.png`. Si tu visual de IA está en una segunda página, captura también esa página.
 3. Si aún no lo hiciste, sube la captura a la actividad de ClassPoint.
 
-## Arma tu ficha de evidencia
+## Completa y entrega tu ficha
 Duration: 0:10:00
 
-Crea un documento con esta estructura y expórtalo a PDF con el nombre `Lab07_Apellido_Nombre.pdf`.
+Tu ficha de evidencia es un documento de Word corto: el .pbix v1 y la captura .png van aparte. Descárgala de la tarea **Laboratorio 7** del LMS y complétala mientras avanzas.
 
-| Sección | Qué va |
+| Parte de la ficha | Qué registras |
 |---|---|
-| Encabezado | Nombre, escenario y herramientas de IA usadas |
-| 1. Prompts usados | El prompt para explicar una medida DAX, el prompt para explicar tus pasos de Power Query y, si lo hiciste, el de revisión de diseño, con un extracto de cada respuesta |
-| 2. Resultado | Captura del visual de IA con su configuración (qué pusiste en Analizar y en Explicar por) y la frase del hallazgo. Si el visual no encontró influenciadores, explícalo |
-| 3. Qué verificaste o corregiste | Cómo confirmaste el hallazgo (gráfico o Excel), qué corregiste después de leer la explicación de la IA, el checklist de diseño marcado y la retroalimentación del docente |
-| 4. Producto final | Captura del dashboard v1 y tu lista de mejoras priorizada |
+| Portada | Tu nombre, tu escenario, el visual de IA que usaste y la fecha |
+| Paso 3 | Qué pusiste en Analizar y en Explicar por, una captura del visual y la frase del hallazgo con cómo lo confirmaste (si no encontró influenciadores, escríbelo) |
+| Paso 4 | El prompt con el que pediste la explicación de tu medida DAX y qué confirmaste o corregiste |
+| Paso 5 | El checklist de diseño marcado y la captura de tu dashboard v1 ya ordenado |
+| Pasos 6 y 7 | Tu lista de al menos 5 mejoras, con la retroalimentación del docente como origen «Docente» |
+| Conclusiones | Qué te enseñó el visual de IA y cuál es tu mejora más importante para la S8 |
 
-Sube a la tarea **Laboratorio 7** del LMS, hoy hasta las **23:59**: el PDF, el `.pbix` v1 y la captura `.png`.
+Al terminar, revisa la lista **Antes de entregar** del final de la ficha y guárdala como PDF con el nombre `Lab07_Apellido_Nombre.pdf`. Sube a la tarea **Laboratorio 7** del LMS, hoy hasta las **23:59**: el PDF, el `.pbix` v1 y la captura `.png`.
 
 ## Rúbrica
 Duration: 0:00:00

@@ -22,7 +22,7 @@ Este es el **paso 1 del proyecto integrador**. Hoy construyes la materia prima d
 | Entregable | Detalle |
 |---|---|
 | Archivo `.xlsx` | Nombre sugerido: `Lab04_<Apellido>_<escenario>.xlsx`. Con 4 hojas: **Crudo**, **Limpio**, **Verificacion** y **Bitacora**. |
-| Ficha de evidencia en PDF | Las 4 partes de siempre: prompts, resultado, qué verificaste o corregiste y producto final (plantilla en «Arma tu ficha de evidencia»). |
+| Ficha de evidencia en PDF | Un documento de Word que descargas de la tarea "Laboratorio 4" del LMS: 3 capturas, tus filas antes y después, 2 prompts y la corrección que le hiciste a la IA. |
 | Dónde y cuándo | Tarea "Laboratorio 4" del LMS, hoy hasta las 23:59. |
 
 ### Herramientas
@@ -37,7 +37,8 @@ Este es el **paso 1 del proyecto integrador**. Hoy construyes la materia prima d
 
 - Tu IA con sesión iniciada.
 - Un libro nuevo de Excel guardado como `Lab04_<Apellido>_<escenario>.xlsx`.
-- El dataset de respaldo del LMS, por si la IA no logra generar el tuyo.
+- Tu ficha de evidencia (el Word de la tarea "Laboratorio 4"). Si no tienes Word, ábrela en Google Docs.
+- El dataset de respaldo de tu escenario (.xlsx, en la tarea del LMS), por si la IA no logra generar el tuyo.
 - Opcional: tu asistente del Lab 2. Ya trae la regla de fórmulas en español con punto y coma; úsalo en lugar del chat general.
 
 > **Ojo:** trabaja solo con **datos simulados** y códigos (EQ-101, CLI-07, COLAB-021). Nunca nombres reales, DNI ni datos de salud (Ley 29733).
@@ -162,6 +163,8 @@ Vas a pegar los datos **tal cual** en una hoja llamada **Crudo**. Así conservas
 3. En la pestaña **Diseño de tabla** (en Mac: **Tabla**), escribe `crudo` en **Nombre de la tabla** y presiona Enter.
 
 > **Verifica:** escribe en una celda vacía, fuera de la tabla, `=FILAS(crudo)`. Debe darte entre 300 y 500. Anota el número: es tu "antes".
+
+> **Si usas el dataset de respaldo (.xlsx):** ábrelo, selecciona todo desde A1 (Ctrl+Shift+Fin) y pégalo en la celda A1 de tu hoja Crudo. Ya viene separado en columnas y como texto, con los errores intactos: salta a «Conviértelo en tabla y nómbrala».
 
 > **Ruta alternativa (si ya conoces Power Query):** puedes importar el .csv con **Datos › Obtener datos › Desde archivo › Desde texto/CSV** y elegir **Transformar datos**. En ese caso tu "crudo" es el archivo .csv: entrégalo junto con el .xlsx.
 
@@ -454,37 +457,20 @@ En una hoja nueva llamada **Bitacora**, crea una tabla (Ctrl+T) con estas column
 
 Agrega al final una línea con el resumen de filas: `Crudo: 412 · Quitadas: 23 (14 duplicados, 6 errores de fecha, 3 horas negativas) · Limpio: 389`.
 
-## Arma tu ficha de evidencia
+## Completa y entrega tu ficha
 Duration: 0:05:00
 
-Crea un documento (Word, Google Docs o el que prefieras), pega lo siguiente y expórtalo a PDF.
+Tu ficha de evidencia es un documento de Word corto: la bitácora y la verificación ya están en tu libro de Excel, así que en la ficha solo registras lo esencial. Descárgala de la tarea **Laboratorio 4** del LMS y complétala mientras avanzas.
 
-```
-LABORATORIO 4 · DATASET LIMPIO CON EXCEL, POWER QUERY E IA
-Nombre: ______________________   Escenario: equipos / logística / asistencia
-Herramienta de IA usada: ______________________
+| Parte de la ficha | Qué registras |
+|---|---|
+| Portada | Tu nombre, tu escenario, la herramienta de IA y la fecha |
+| Pasos 2 y 3 | Si generaste el dataset o usaste el respaldo, el prompt completo y una captura de la hoja Crudo (primeras 15 filas) |
+| Pasos 4 a 7 | Captura del editor de Power Query (barras de calidad y Pasos aplicados) y tus filas: Crudo, quitadas con sus motivos y Limpio |
+| Pasos 8 y 9 | El prompt de tu columna Control, la comprobación de 3 filas, una captura de la hoja Verificacion y la corrección que le hiciste a la IA |
+| Conclusiones | Qué error te habría engañado si no verificabas y qué harás distinto en la S5 |
 
-1. PROMPTS USADOS
-   a) Prompt completo para generar el dataset.
-   b) Dos prompts que usaste para pedir fórmulas (o pasos de Power Query).
-
-2. RESULTADO
-   a) Captura de la hoja Crudo con errores visibles (primeras 15 filas).
-   b) Captura del editor de Power Query con las barras de calidad y los Pasos aplicados.
-   c) Captura de la hoja Limpio.
-
-3. QUÉ VERIFIQUÉ O CORREGÍ
-   a) Captura de la hoja Verificacion (antes y después).
-   b) Las 3 entradas de la bitácora, incluida la corrección que le hiciste a la IA.
-   c) En 2 o 3 oraciones: ¿qué error de los datos o de la IA te habría engañado si no verificabas?
-
-4. PRODUCTO FINAL
-   Nombre del archivo .xlsx: ______________________
-   Filas en Crudo: ___   Filas quitadas: ___ (motivos)   Filas en Limpio: ___
-   Hojas incluidas: Crudo · Limpio · Verificacion · Bitacora
-```
-
-Sube el PDF y el .xlsx a la tarea "Laboratorio 4" del LMS hoy, hasta las 23:59.
+Al terminar, revisa la lista **Antes de entregar** del final de la ficha y guárdala como PDF con el nombre `Lab04_Apellido_Nombre.pdf`. Sube **los dos archivos** (la ficha en PDF y tu libro `Lab04_<Apellido>_<escenario>.xlsx`) a la tarea **Laboratorio 4** del LMS hoy hasta las **23:59**.
 
 ## Rúbrica
 Duration: 0:00:00

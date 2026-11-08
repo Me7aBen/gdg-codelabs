@@ -22,7 +22,7 @@ Este es el **paso 2 del proyecto integrador**. Con la tabla limpia del Laborator
 | Entregable | Detalle |
 |---|---|
 | Archivo `.xlsx` | Nombre sugerido: `Lab05_<Apellido>_<escenario>.xlsx`. Parte de tu archivo del Lab 4 y agrega las hojas **Ficha_KPI**, **KPI**, **TD** y **Dashboard**. |
-| Ficha de evidencia en PDF | Prompts, resultado, qué verificaste o corregiste y producto final (plantilla en «Arma tu ficha de evidencia»). |
+| Ficha de evidencia en PDF | Un documento de Word que descargas de la tarea "Laboratorio 5" del LMS: 3 capturas, tu tabla de control, 2 prompts y tu decisión. |
 | Dónde y cuándo | Tarea "Laboratorio 5" del LMS, hoy hasta las 23:59. |
 
 ### Herramientas
@@ -35,7 +35,8 @@ Este es el **paso 2 del proyecto integrador**. Con la tabla limpia del Laborator
 ### Ten abierto
 
 - Tu archivo del Laboratorio 4, guardado con otro nombre: **Archivo › Guardar como** › `Lab05_<Apellido>_<escenario>.xlsx`.
-- Si no terminaste el Lab 4, descarga el **dataset limpio de respaldo** del LMS (mismas columnas y la columna Control). Si no ves la columna Control, omite el filtro Control = OK en todas las tablas dinámicas.
+- Tu ficha de evidencia (el Word de la tarea "Laboratorio 5"). Si no tienes Word, ábrela en Google Docs.
+- Si no terminaste el Lab 4, descarga el **dataset limpio de respaldo** de tu escenario del LMS (`registro_mantenimiento_limpio.xlsx`, `despachos_limpio.xlsx` o `asistencia_limpio.xlsx`). Trae la tabla ya nombrada, con las columnas de tu escenario y la columna Control. Guárdalo como `Lab05_<Apellido>_<escenario>.xlsx` y trabaja sobre su hoja Limpio. Si no ves la columna Control, omite el filtro Control = OK en todas las tablas dinámicas.
 - Tu informe del Lab 2: ahí están las metas del sector que investigaste, con sus fuentes. Opcional: tu asistente del Lab 2 para proponer los KPI.
 
 > **Ojo:** antes de calcular, revisa tu columna Control del Lab 4. Si hay filas "Revisar", corrígelas en Power Query o, si decides dejarlas, exclúyelas en las tablas dinámicas (filtro Control = OK) y también en la hoja KPI. Un KPI calculado sobre datos dudosos es un KPI dudoso.
@@ -315,37 +316,20 @@ Las segmentaciones filtran tablas dinámicas, **no** fórmulas sueltas. Por eso 
 > - [ ] Al hacer clic en la segmentación cambian gráficos **y** tarjetas.
 > - [ ] Los totales coinciden con la hoja KPI.
 
-## Arma tu ficha de evidencia
+## Completa y entrega tu ficha
 Duration: 0:07:00
 
-Crea un documento (Word, Google Docs o el que prefieras), pega lo siguiente y expórtalo a PDF.
+Tu ficha de evidencia es un documento de Word corto: la Ficha_KPI, las hojas KPI y TD y el Dashboard ya están en tu libro de Excel. Descárgala de la tarea **Laboratorio 5** del LMS y complétala mientras avanzas.
 
-```
-LABORATORIO 5 · KPI Y MINI-DASHBOARD EN EXCEL
-Nombre: ______________________   Escenario: equipos / logística / asistencia
-Herramienta de IA usada: ______________________
+| Parte de la ficha | Qué registras |
+|---|---|
+| Portada | Tu nombre, tu escenario, si partes de tu Lab 4 o del respaldo, y la fecha |
+| Pasos 2 y 3 | El prompt con el que pediste los KPI, lo que descartaste o corregiste de la propuesta y una captura de la hoja Ficha_KPI |
+| Pasos 4 y 5 | Tabla de control (cada KPI en la hoja KPI y en la tabla dinámica: ¿coinciden?) y un KPI comprobado a mano con un filtro |
+| Pasos 6 y 7 | Captura del Dashboard sin filtros, captura con una segmentación aplicada y la decisión que tomarías |
+| Conclusiones | Qué cambió en un KPI al revisar la propuesta de la IA y qué le preguntarías a tu dashboard en la S6 |
 
-1. PROMPTS USADOS
-   a) Prompt completo con el que pediste los KPI.
-   b) Al menos un prompt de corrección (KPI con columna inventada, denominador, fórmula, etc.).
-
-2. RESULTADO
-   a) Captura de la hoja Ficha_KPI con tus 3 a 5 KPI.
-   b) Captura del Dashboard sin filtros.
-   c) Captura del Dashboard con una segmentación aplicada.
-
-3. QUÉ VERIFIQUÉ O CORREGÍ
-   a) Tabla de control: KPI | Valor en hoja KPI | Valor en tabla dinámica | ¿Coincide? | Si no, por qué.
-   b) Qué propuesta de la IA descartaste o corregiste y por qué.
-   c) Un KPI comprobado a mano con un filtro (cómo lo hiciste).
-
-4. PRODUCTO FINAL
-   Nombre del archivo .xlsx: ______________________
-   KPI elegidos y su estado frente a la meta (Cumple / No cumple).
-   En 2 o 3 oraciones: ¿qué decisión tomarías con lo que muestra tu dashboard?
-```
-
-Sube el PDF y el .xlsx a la tarea "Laboratorio 5" del LMS hoy, hasta las 23:59.
+Al terminar, revisa la lista **Antes de entregar** del final de la ficha y guárdala como PDF con el nombre `Lab05_Apellido_Nombre.pdf`. Sube **los dos archivos** (la ficha en PDF y tu libro `Lab05_<Apellido>_<escenario>.xlsx`) a la tarea **Laboratorio 5** del LMS hoy hasta las **23:59**.
 
 ## Rúbrica
 Duration: 0:00:00

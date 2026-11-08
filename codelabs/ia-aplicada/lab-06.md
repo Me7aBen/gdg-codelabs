@@ -21,14 +21,15 @@ En este laboratorio das un paso más en tu proyecto integrador: conviertes el Ex
 |---|---|
 | `Lab06_Apellido_Nombre.pbix` | Tu archivo de Power BI con la página y las medidas |
 | `Lab06_Apellido_Nombre.png` | Captura de la página completa |
-| `Lab06_Apellido_Nombre.pdf` | Ficha de evidencia (4 partes) |
+| `Lab06_Apellido_Nombre.pdf` | Ficha de evidencia: un documento de Word que descargas de la tarea "Laboratorio 6" y exportas a PDF |
 
 ### Lo que necesitas
 
 | Requisito | Detalle |
 |---|---|
 | Power BI Desktop | Gratis, **solo para Windows 10 u 11**. Instálalo desde Microsoft Store (busca "Power BI Desktop"). No necesitas iniciar sesión para trabajar. |
-| Tu Excel limpio (S4) | Con los datos como tabla de Excel (Ctrl+T). Sirve el archivo del Lab 4 o el del Lab 5, que lo contiene. Si no lo tienes, usa el dataset de respaldo del docente: tiene las mismas columnas. |
+| Tu Excel limpio (S4) | Con los datos como tabla de Excel (Ctrl+T). Sirve el archivo del Lab 4 o el del Lab 5, que lo contiene. Si no lo tienes, usa el dataset limpio de respaldo del LMS (`registro_mantenimiento_limpio.xlsx`, `despachos_limpio.xlsx` o `asistencia_limpio.xlsx`): tiene las mismas columnas y la tabla ya nombrada. |
+| Tu ficha de evidencia | El Word de la tarea "Laboratorio 6" del LMS. Complétala mientras avanzas. |
 | Tu ficha de KPI (S5) | Nombre, fórmula y meta de 3 a 5 KPI. |
 | Herramienta de IA | ChatGPT, Gemini o Copilot Chat (gratis con cuenta Microsoft). |
 | Excel | Para verificar tus medidas. Funciona también en Mac. |
@@ -358,20 +359,21 @@ Duration: 0:02:00
 
 > **Ojo:** el .pbix guarda una copia de tus datos. Como trabajas con datos simulados, puedes compartirlo. En un trabajo real, revisa antes qué datos contiene.
 
-## Arma tu ficha de evidencia
+## Completa y entrega tu ficha
 Duration: 0:07:00
 
-Crea un documento con esta estructura y expórtalo a PDF con el nombre `Lab06_Apellido_Nombre.pdf`.
+Tu ficha de evidencia es un documento de Word corto: el .pbix y la captura .png van aparte. Descárgala de la tarea **Laboratorio 6** del LMS y complétala mientras avanzas.
 
-| Sección | Qué va |
+| Parte de la ficha | Qué registras |
 |---|---|
-| Encabezado | Nombre, escenario, herramienta de IA usada y dónde trabajaste (Windows, en pareja o en la web) |
-| 1. Prompts usados | Al menos 2 prompts DAX completos y la medida que te devolvió la IA en cada caso |
-| 2. Resultado | Captura del panel Datos con tus medidas y captura de la página |
-| 3. Qué verificaste o corregiste | Filas cargadas vs. filas del Excel. Tabla **Medida · Power BI · Excel · ¿Coincide? · Qué corregí** con al menos 2 medidas, en total y con filtro. Diferencias entre la medida de la IA y la de referencia |
-| 4. Producto final | Captura final y 2 o 3 líneas: qué muestra tu dashboard y una primera conclusión (ej.: "La disponibilidad del turno noche es 6 puntos menor que la del turno día") |
+| Portada | Tu nombre, tu escenario, dónde trabajaste (tu PC, una prestada, en pareja o en la web) y la fecha |
+| Pasos 3 y 4 | Filas de tu Excel y filas cargadas en Power BI: deben coincidir |
+| Paso 5 | El prompt DAX de tu KPI principal, la medida que te devolvió la IA y una captura del panel Datos con tus medidas |
+| Paso 6 | Tabla **Medida · Filtro · Power BI · Excel · ¿Coincide?** con al menos 2 medidas, en total y con filtro, y qué corregiste |
+| Pasos 7 a 9 | Captura de tu página completa y qué muestra tu dashboard |
+| Conclusiones | Qué medida te costó verificar y qué le agregarías en la S7 |
 
-Sube a la tarea **Laboratorio 6** del LMS, hoy hasta las **23:59**: el PDF, el `.pbix` y la captura `.png`.
+Al terminar, revisa la lista **Antes de entregar** del final de la ficha y guárdala como PDF con el nombre `Lab06_Apellido_Nombre.pdf`. Sube a la tarea **Laboratorio 6** del LMS, hoy hasta las **23:59**: el PDF, el `.pbix` y la captura `.png`.
 
 ## Rúbrica
 Duration: 0:00:00

@@ -20,7 +20,7 @@ En este laboratorio harás dos cosas:
 
 **Qué entregas:** en la tarea "Laboratorio 2" del LMS, hoy hasta las 23:59:
 
-- Ficha de evidencia en PDF (`Lab02_Apellido_Nombre.pdf`), con las capturas de tu asistente y sus instrucciones.
+- Ficha de evidencia en PDF (`Lab02_Apellido_Nombre.pdf`), con las capturas de tu asistente y sus instrucciones. La ficha es un documento de Word que descargas de esa misma tarea.
 - Informe breve de 1 página (`Lab02_Informe_Apellido_Nombre.docx`).
 
 ### Lo que necesitas
@@ -29,8 +29,9 @@ En este laboratorio harás dos cosas:
 |---|---|
 | Herramienta de investigación | Deep Research de Gemini (recomendado; gratis con límite mensual), Deep Research de ChatGPT (versión ligera con pocos usos en el plan gratis) o el agente Investigador (Researcher) de Copilot si tu cuenta lo tiene. |
 | Herramienta para el asistente | Gem de Gemini (gratis con cuenta Google), agente de Copilot Chat (cuenta de trabajo o estudio) o GPT personalizado (crearlo requiere ChatGPT de pago). |
-| Procesador de texto | Word o Google Docs para el informe y la ficha. |
-| Tu escenario | El que elegiste en el Laboratorio 1: control de equipos, logística o asistencia. |
+| Ficha de evidencia | El Word de la tarea "Laboratorio 2" del LMS. Si no tienes Word, ábrela en Google Docs. |
+| Procesador de texto | Word o Google Docs para redactar el informe breve. |
+| Tu contexto | El mismo del Laboratorio 1: tu trabajo o área, o un escenario de ejemplo (control de equipos, logística o asistencia). |
 | Tu ficha del Lab 1 | Tu mejor prompt mejorado: será la base de tu asistente. |
 
 > **Ojo:** los planes gratuitos permiten pocas investigaciones profundas al mes. Prepara bien tu pregunta antes de lanzarla. Si ya no te quedan usos, usa el chat normal con búsqueda web y pide fuentes con enlace: el método de verificación es el mismo.
@@ -49,7 +50,7 @@ Duration: 0:10:00
 
 ### 1. Escribe tu pregunta de investigación
 
-Una buena pregunta es clara y acotada: dice el sector, el país y qué buscas. Usa la de tu escenario o ajústala:
+Una buena pregunta es clara y acotada: dice el sector, el país y qué buscas. Si trabajas con un escenario de ejemplo, usa su pregunta; si trabajas con tu propio contexto, adáptala a tu sector:
 
 | Escenario | Pregunta sugerida |
 |---|---|
@@ -64,6 +65,8 @@ Una buena pregunta es clara y acotada: dice el sector, el país y qué buscas. U
 - **Copilot:** si tu cuenta tiene el agente **Researcher (Investigador)**, ábrelo desde la lista de agentes de Microsoft 365 Copilot.
 
 ### 3. Copia el prompt de tu escenario y lánzalo
+
+Si trabajas con tu propio contexto, copia el que más se parezca y cambia el rol, el contexto y la tarea. Deja las restricciones y el formato como están.
 
 **Control de equipos**
 
@@ -130,14 +133,14 @@ FORMATO: 1) Tabla con columnas KPI, fórmula, para qué sirve y fuente
 
 La investigación tarda de 5 a 15 minutos. **No cierres la pestaña** y pasa al siguiente paso mientras tanto.
 
-> **Verifica:** copia en tu ficha (parte 1) el prompt exacto que usaste. Si editaste el plan de Gemini o respondiste preguntas de ChatGPT, anota qué cambiaste.
+> **Verifica:** copia en tu ficha (paso 2) tu pregunta y el prompt exacto que usaste. Si editaste el plan de Gemini o respondiste preguntas de ChatGPT, anota qué cambiaste.
 
 ## Mientras investiga: escribe las instrucciones de tu asistente
 Duration: 0:08:00
 
 Un asistente reutilizable es un chat con **instrucciones guardadas**: cada vez que lo abres ya sabe quién es, qué datos manejas y cómo debe responder. Es tu prompt de 5 elementos, escrito para durar.
 
-Escribe tus instrucciones en un documento (las pegarás en la herramienta en el paso 6). Usa esta plantilla:
+Escribe tus instrucciones en tu ficha (paso 3); las pegarás en la herramienta en el paso 6. Usa esta plantilla:
 
 ```
 ROL: Eres el asistente de [tema] de [tipo de empresa] en Perú.
@@ -228,7 +231,7 @@ Ponle un **nombre** claro a tu asistente, por ejemplo: *Asistente de despachos �
 ## Verifica las citas
 Duration: 0:12:00
 
-Cuando termine la investigación, lee el informe completo. Luego elige **5 afirmaciones importantes**: los KPI y las buenas prácticas que piensas poner en tu informe.
+Cuando termine la investigación, lee el informe completo y pega en tu ficha una captura del inicio. Luego elige **5 afirmaciones importantes**: los KPI y las buenas prácticas que piensas poner en tu informe.
 
 ### El método de 4 pasos
 
@@ -249,7 +252,7 @@ Para cada afirmación:
 
 ### Tu tabla de verificación
 
-Copia esta tabla en tu ficha y complétala:
+Completa la tabla del paso 4 de tu ficha. Tiene estas columnas y, en **Estado**, los tres símbolos: deja solo el que corresponde.
 
 | # | Afirmación de la IA | Fuente citada (enlace) | ¿Existe? | ¿Dice eso? | Autor y fecha | Segunda fuente | Estado |
 |---|---|---|---|---|---|---|---|
@@ -265,7 +268,7 @@ Copia esta tabla en tu ficha y complétala:
 
 ### Si una cita sale ⚠️ o ❌
 
-Pídele a la IA que la corrija y vuelve a verificar la nueva fuente:
+Pídele a la IA que la corrija y vuelve a verificar la nueva fuente. Anota en tu ficha qué descartaste y por qué.
 
 ```
 La afirmación "[pega la afirmación]" no aparece en la fuente que
@@ -379,7 +382,7 @@ Guarda tus instrucciones en un documento llamado `Asistente_[escenario].txt` y p
 ## Prueba y mejora tu asistente
 Duration: 0:06:00
 
-Haz **2 pruebas**: la prueba 1 y una de las pruebas 2 o 3.
+Haz **2 pruebas**: la prueba 1 y una de las pruebas 2 o 3. Si trabajas con tu propio contexto, cambia los pedidos por unos equivalentes con tus datos simulados.
 
 ### Prueba 1 — Una tarea normal
 
@@ -410,20 +413,22 @@ Agrega o refuerza la regla que no cumplió (por ejemplo: *"Nunca respondas con c
 
 > **Verifica:** recalcula tú el resultado de la prueba 1. Anota en tu ficha si el asistente acertó, si cayó en la trampa y qué cambiaste en sus instrucciones.
 
-## Arma tu ficha de evidencia
+## Completa y entrega tu ficha
 Duration: 0:07:00
 
-Crea un documento con esta estructura y expórtalo a PDF con el nombre `Lab02_Apellido_Nombre.pdf`.
+Tu ficha de evidencia es un documento de Word con un recuadro para cada evidencia. Descárgala de la tarea **Laboratorio 2** del LMS y complétala mientras avanzas. Si no tienes Word, ábrela en Google Docs.
 
-| Sección | Qué va |
+| Parte de la ficha | Qué registras |
 |---|---|
-| Encabezado | Nombre, escenario, herramienta de investigación y herramienta del asistente |
-| 1. Prompts usados | Prompt de investigación (y cambios al plan), prompts para planificar y redactar, instrucciones completas del asistente |
-| 2. Resultado | Captura del inicio del informe de la IA, captura de la configuración del asistente y capturas de las 2 pruebas |
-| 3. Qué verificaste o corregiste | Tabla de verificación de 5 citas con el semáforo, qué descartaste y qué cambiaste en las instrucciones tras las pruebas |
-| 4. Producto final | Tu informe breve (adjunto como .docx) y el nombre de tu asistente |
+| Portada | Tu nombre, tu contexto, la herramienta de investigación, la herramienta del asistente y la fecha |
+| Paso 2 | Tu pregunta, el prompt de investigación y los cambios al plan |
+| Paso 3 | El nombre y las instrucciones completas de tu asistente |
+| Paso 4 | Captura del inicio del informe de la IA, tabla de 5 citas con el semáforo y qué descartaste |
+| Paso 5 | Los prompts para planificar y redactar, y la lista de revisión de tu informe |
+| Pasos 6 y 7 | Captura de la configuración del asistente, capturas de las 2 pruebas y qué cambiaste en las instrucciones |
+| Conclusiones | Qué aprendiste y para qué usarás tu asistente |
 
-Sube **los dos archivos** (PDF y .docx) a la tarea **Laboratorio 2** del LMS hoy hasta las **23:59**.
+Al terminar, revisa la lista **Antes de entregar** del final de la ficha y guárdala como PDF con el nombre `Lab02_Apellido_Nombre.pdf`. Sube **los dos archivos** (la ficha en PDF y tu informe `Lab02_Informe_Apellido_Nombre.docx`) a la tarea **Laboratorio 2** del LMS hoy hasta las **23:59**.
 
 ## Rúbrica
 Duration: 0:00:00
@@ -440,9 +445,9 @@ Duration: 0:00:00
 ## Si terminas antes
 Duration: 0:00:00
 
-Lanza la **misma pregunta en una segunda herramienta** de investigación (por ejemplo, si usaste Gemini, prueba ChatGPT) y compara: ¿coinciden los KPI?, ¿cuántas citas de cada una pasaron tu verificación? Anota en tu ficha cuál fue más confiable para tu tema.
+Lanza la **misma pregunta en una segunda herramienta** de investigación (por ejemplo, si usaste Gemini, prueba ChatGPT) y compara: ¿coinciden los KPI?, ¿cuántas citas de cada una pasaron tu verificación? Anota en el recuadro **Reto extra** de tu ficha cuál fue más confiable para tu tema.
 
-Otra opción: pide a un compañero de tu mismo escenario que pruebe tu asistente con un pedido suyo y anota qué mejorarías.
+Otra opción: pide a un compañero que pruebe tu asistente con un pedido suyo y anota en ese recuadro qué mejorarías.
 
 ## Resumen
 Duration: 0:00:00

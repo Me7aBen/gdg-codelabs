@@ -17,7 +17,7 @@ En este laboratorio vas a trabajar con **3 documentos de tu escenario** (un proc
 
 **Qué entregas:** en la tarea "Laboratorio 3" del LMS, hoy hasta las 23:59:
 
-- Ficha de evidencia en PDF (`Lab03_Apellido_Nombre.pdf`).
+- Ficha de evidencia en PDF (`Lab03_Apellido_Nombre.pdf`). La ficha es un documento de Word que descargas de esa misma tarea.
 - Informe ejecutivo de 1 página, con la tabla extraída como anexo (`Lab03_Informe_Apellido_Nombre.docx`).
 - Presentación de 3 diapositivas (`Lab03_Presentacion_Apellido_Nombre.pptx`).
 
@@ -26,7 +26,8 @@ En este laboratorio vas a trabajar con **3 documentos de tu escenario** (un proc
 | Requisito | Detalle |
 |---|---|
 | Herramienta para documentos | Gemini Notebook (antes NotebookLM) en notebooklm.google, gratis con cuenta Google (recomendado). Alternativa: ChatGPT, Gemini o Copilot Chat con archivos adjuntos. |
-| Procesador de texto | Word o Google Docs. |
+| Ficha de evidencia | El Word de la tarea "Laboratorio 3" del LMS. Si no tienes Word, ábrela en Google Docs. |
+| Procesador de texto | Word o Google Docs para redactar el informe. |
 | Presentaciones | PowerPoint o Google Slides. Con IA: Gamma (créditos gratuitos), Copilot en PowerPoint (requiere licencia de Microsoft 365 Copilot) o Gemini en Google Slides (requiere plan elegible). |
 | Excel (opcional) | Para contar filas y recalcular totales de tu tabla. |
 | Tus documentos | Los 3 documentos de ejemplo de tu escenario, en el paso siguiente. |
@@ -303,7 +304,7 @@ Haz una pregunta cuya respuesta **no está** en los documentos:
 | Logística | ¿Cuánto ganan los conductores de TRA-B? |
 | Asistencia | ¿Cuántos días de vacaciones le quedan a COLAB-014? |
 
-**Lo correcto:** que responda que esa información no está en las fuentes. Si inventa una respuesta, anótalo en tu ficha.
+**Lo correcto:** que responda que esa información no está en las fuentes. Marca en tu ficha qué respondió.
 
 > **Verifica:** abre 2 citas al azar (o busca en el documento la sección que indicó la IA) y confirma que la idea está ahí. Si la IA atribuyó una idea al documento equivocado, anótalo.
 
@@ -541,20 +542,21 @@ En cada diapositiva, agrega la fuente al pie en formato corto, por ejemplo: *Fue
 
 Guarda la presentación como `.pptx`.
 
-## Arma tu ficha de evidencia
+## Completa y entrega tu ficha
 Duration: 0:10:00
 
-Crea un documento con esta estructura y expórtalo a PDF con el nombre `Lab03_Apellido_Nombre.pdf`.
+Tu ficha de evidencia es un documento de Word corto, con un recuadro para cada evidencia. Descárgala de la tarea **Laboratorio 3** del LMS y complétala mientras avanzas. Si no tienes Word, ábrela en Google Docs. No copies en ella los prompts de esta guía: solo el de tu informe.
 
-| Sección | Qué va |
+| Parte de la ficha | Qué registras |
 |---|---|
-| Encabezado | Nombre, escenario y herramientas usadas (documentos, informe y presentación) |
-| 1. Prompts usados | Prompts de resumen, extracción, comparación, informe y guion de diapositivas |
-| 2. Resultado | Capturas del resumen con citas, de la tabla extraída y de la tabla de brechas |
-| 3. Qué verificaste o corregiste | Conteo de filas, las 3 filas revisadas, los totales recalculados, las inconsistencias que encontraste en los documentos, lo que corregiste a la IA y qué pasó con la pregunta trampa |
-| 4. Producto final | Captura de tus 3 diapositivas y referencia a tus archivos .docx y .pptx |
+| Portada | Tu nombre, tu escenario, la herramienta de IA y la fecha |
+| Pasos 2 y 3 | Captura del resumen con citas y qué respondió la IA a la pregunta trampa |
+| Paso 4 | Captura de tu tabla en Excel y qué encontraste o corregiste al verificarla |
+| Paso 5 | 3 brechas, cada una con su caso y su regla; al menos una inconsistencia de los propios documentos |
+| Pasos 6 y 7 | El prompt de tu informe y una captura de tus 3 diapositivas |
+| Conclusiones | Qué aprendiste y en qué documento de tu trabajo lo aplicarías |
 
-Sube **los tres archivos** (PDF, .docx y .pptx) a la tarea **Laboratorio 3** del LMS hoy hasta las **23:59**.
+Al terminar, revisa la lista **Antes de entregar** del final de la ficha y guárdala como PDF con el nombre `Lab03_Apellido_Nombre.pdf`. Sube **los tres archivos** (la ficha en PDF, tu informe .docx y tu presentación .pptx) a la tarea **Laboratorio 3** del LMS hoy hasta las **23:59**.
 
 ## Rúbrica
 Duration: 0:00:00
@@ -573,7 +575,7 @@ Duration: 0:00:00
 
 Prueba la operación **transformar**: pide a la IA que convierta el procedimiento de tu escenario en un **checklist de una página** para el técnico, el coordinador o el supervisor, y revisa que no agregue pasos que no estén en el documento.
 
-Si usaste Gemini Notebook, explora el panel **Studio**: genera un mapa mental o un resumen en audio de tus 3 documentos y compáralo con tu informe. ¿Destacó los mismos hallazgos? Anótalo en tu ficha.
+Si usaste Gemini Notebook, explora el panel **Studio**: genera un mapa mental o un resumen en audio de tus 3 documentos y compáralo con tu informe. ¿Destacó los mismos hallazgos? Anótalo en las conclusiones de tu ficha.
 
 ## Resumen
 Duration: 0:00:00
